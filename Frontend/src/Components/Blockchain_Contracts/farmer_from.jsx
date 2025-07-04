@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ethers } from "ethers";
 
-export default function PostAdvertisementForm() {
+const PostAdvertisementForm = () => {
   const [formData, setFormData] = useState({
     product: "",
     quantity: "",
@@ -130,3 +130,4 @@ export default function PostAdvertisementForm() {
     </div>
   );
 }
+export default PostAdvertisementForm;
