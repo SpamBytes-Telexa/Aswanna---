@@ -11,12 +11,14 @@ router = APIRouter()
 async def chatbot(request: ChatRequest):
     query_type = classify_query(request.query)
 
-    if query_type in ["legal", "prices"]:
-        response = get_tavily_response(request.query)
-    else:
-        response = get_gemini_response(request.query)
+    response = query_type
 
-    if request.language == "සිංහල":
-        response = translate_to_sinhala(response)
+    #if query_type in ["legal", "prices"]:
+        #response = get_tavily_response(request.query)
+    #else:
+        #response = get_gemini_response(request.query)
+
+    #if request.language == "සිංහල":
+        #response = translate_to_sinhala(response)
 
     return {"response": response}

@@ -31,7 +31,7 @@ app.add_middleware(
 def read_root():
     return {"message": "Backend running ✅"}
 
-app.include_router(chat.router)
+app.include_router(chat.router, prefix='/chatbot', tags=['Chatbot'])
 
 '''
 @app.get("/api/my-contracts")
