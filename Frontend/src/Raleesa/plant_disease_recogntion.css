@@ -1,0 +1,93 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /*background: #f4f6f8;*/
+  background-image: url('../../public/bg.jpg'); /* from public folder */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #333;
+}
+
+.app {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+h2 {
+  color: #2e7d32;
+  margin-bottom: 24px;
+}
+
+.upload-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+input[type="file"] {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.preview {
+  margin-top: 10px;
+  width: 250px;
+  height: auto;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+button {
+  background-color: #2e7d32;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+button:hover {
+  background-color: #1b5e20;
+}
+
+.result-card {
+  margin-top: 30px;
+  background-color: #e8f5e9;
+  border-left: 6px solid #43a047;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: left;
+}
+
+/* Green for healthy */
+.result-card.healthy {
+  background-color: #e0f2f1;
+  border-left: 6px solid #2e7d32;
+  color: #1b5e20;
+}
+
+/* Red for diseased */
+.result-card.diseased {
+  background-color: #ffebee;
+  border-left: 6px solid #c62828;
+  color: #b71c1c;
+}
+
+.button{
+  background-color: #2e7d32;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+}

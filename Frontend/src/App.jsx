@@ -1,6 +1,23 @@
 
 import React from 'react'
 
+import FarmerForm from './Components/Blockchain_Contracts/farmer_from';
+import Farmer_contracts from './Components/Blockchain_Contracts/farmer_contracts';
+import BuyerUI from './Components/Blockchain_Contracts/Buyer_UI';
+import OfferDetails from './Components/Blockchain_Contracts/offer_details';
+import Chatbot from './madhuni/pages/Chatbot';
+//import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+//import Home from './madhuni/pages/Home';
+
+import PlantDisease from './Raleesa/plant_disease_recogntion';
+
+
+
+//import FarmerForm from "./Components/Blockchain_Contracts/farmer_from";
+//import Farmer_contracts from "./Components/Blockchain_Contracts/farmer_contracts";
+//import BuyerUI from "./Components/Blockchain_Contracts/Buyer_UI";
+//import OfferDetails from "./Components/Blockchain_Contracts/offer_details";
+
 import {
   BrowserRouter as Router,
   Routes,
@@ -48,6 +65,8 @@ const App = () => {
             path="/recommendation-results"
             element={<RecommendationResults />}
           />
+
+          <Route path="plantDisease" element={<PlantDisease/>}/>
         </Routes>
       </Router>
     </div>
