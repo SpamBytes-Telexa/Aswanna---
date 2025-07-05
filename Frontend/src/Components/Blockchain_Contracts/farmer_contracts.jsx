@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-
+import bimage from "../../assets/contracts.jpeg";
 export default function MyContracts() {
   const [contracts, setContracts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchContracts = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/my-contracts");
+      const response = await fetch("http://localhost:8000/blockchain/my-contracts");
       const data = await response.json();
       setContracts(data.contracts);
     } catch (error) {
@@ -63,18 +63,20 @@ export default function MyContracts() {
   return (
     <div
   className="p-6 min-h-screen bg-gradient-to-b from-green-50 to-white bg-fixed bg-cover"
-  style={{
-    backgroundImage:
-      "url('https://images.unsplash.com/photo-1607862271203-7611d03ac0e3?auto=format&fit=crop&w=1470&q=80')",
-    backgroundRepeat: "no-repeat",
-    backgroundPosition: "top center",
-    backgroundSize: "cover",
-  }}
+
+    style={{
+      backgroundImage: `url(${bimage})`,
+      backgroundRepeat: "no-repeat",
+      backgroundPosition: "top center",
+      backgroundSize: "cover",
+    }}
+
 >
   <div className="bg-white bg-opacity-90 backdrop-blur-md p-6 rounded-2xl shadow-2xl max-w-6xl mx-auto">
     <h2 className="text-4xl font-bold mb-6 text-center text-green-800 flex items-center justify-center gap-2">
       🌱 My Crop Contracts
     </h2>
+
 
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-green-200 text-sm">
