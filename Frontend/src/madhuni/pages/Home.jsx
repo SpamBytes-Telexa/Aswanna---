@@ -1,5 +1,6 @@
 import React from "react";
 import ChatbotButton from "../components/chatbotbutton";
+import Navbar from "../components/Navbar";
 import { motion } from "framer-motion";
 import paddy from "../../assets/tea4.jpeg";
 
@@ -86,6 +87,7 @@ const letterVariants = {
   }
 };
 
+
 const Home = () => {
   return (
     <div
@@ -96,6 +98,7 @@ const Home = () => {
         backgroundPosition: "center",
       }}
     >
+      <Navbar></Navbar>
       <div className="bg-white/80 min-h-screen">
         {/* Hero Section */}
         <section className="pt-32 pb-80 px-4 text-center">
@@ -107,7 +110,7 @@ const Home = () => {
             
 
             <motion.h1 
-            className="mt-5 text-[120px] font-bold text-green-800 mb-4"
+            className="mt-2 text-[120px] font-bold text-green-800 mb-4"
             initial="hidden"
             animate="visible"
             whileHover="hover"
@@ -124,6 +127,8 @@ const Home = () => {
                 </motion.span>
             ))}
             </motion.h1>
+
+            
 
             <motion.h2
               className="mt-20 text-3xl sm:text-5xl font-semibold text-yellow-600 mb-6"
