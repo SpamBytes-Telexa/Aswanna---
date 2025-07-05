@@ -47,19 +47,27 @@ export default function MyContracts() {
           <thead className="bg-gray-100">
             <tr>
               <th className="p-2 border">Product</th>
-              <th className="p-2 border">Buyer</th>
               <th className="p-2 border">Price (Rs)</th>
               <th className="p-2 border">Status</th>
-              <th className="p-2 border">Action</th>
+              <th className="p-2 border">deliveryMethod</th>
+              <th className="p-2 border">location</th>
+              <th className="p-2 border">Quantity</th>
+              <th className="p-2 border">deadline</th>
+              <th className="p-2 border">photo</th>
+
             </tr>
           </thead>
           <tbody>
             {contracts.map((c) => (
               <tr key={c.id} className="text-center">
                 <td className="p-2 border">{c.product}</td>
-                <td className="p-2 border">{c.buyer || "—"}</td>
                 <td className="p-2 border">{c.price}</td>
                 <td className="p-2 border">{c.status}</td>
+                <td className="p-2 border">{c.delivery_method}</td>
+                <td className="p-2 border">{c.location}</td>
+                <td className="p-2 border">{c.quantity}</td>
+                <td className="p-2 border">{c.deadline}</td>
+
                 <td className="p-2 border space-x-2">
                   {c.status === "Buyer accepted" && (
                     <button
