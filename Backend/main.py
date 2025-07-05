@@ -1,24 +1,17 @@
 from fastapi import FastAPI, Depends
-from sqlalchemy.orm import Session
-from uuid import UUID
-from database import engine, get_db
-from models import Base, CropOffer
+#from sqlalchemy.orm import Session
+#from uuid import UUID
+#from database import engine, get_db
+#from models import Base, CropOffer
 from fastapi.middleware.cors import CORSMiddleware
 from routers import predict
 
 from maduni.routes import chat
 
-
-
-
-
-
-
-
-from routers import contracts;    
+#from routers import contracts;    
 app = FastAPI()
 
-Base.metadata.create_all(bind=engine)
+#Base.metadata.create_all(bind=engine)
 
 
 origins = [
@@ -69,3 +62,4 @@ def get_my_contracts(db: Session = Depends(get_db)):
 
 app.include_router(contracts.router, prefix="/blockchain", tags=["contracts"])
 app.include_router(predict.router, prefix="/ml", tags=["predict"])
+

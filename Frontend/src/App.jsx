@@ -17,13 +17,22 @@ import PlantDisease from './Raleesa/plant_disease_recogntion';
 //import Farmer_contracts from "./Components/Blockchain_Contracts/farmer_contracts";
 //import BuyerUI from "./Components/Blockchain_Contracts/Buyer_UI";
 //import OfferDetails from "./Components/Blockchain_Contracts/offer_details";
+
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   useNavigate,
 } from "react-router-dom";
+
+import FarmerForm from './Components/Blockchain_Contracts/farmer_from';
+import Farmer_contracts from './Components/Blockchain_Contracts/farmer_contracts';
+import BuyerUI from './Components/Blockchain_Contracts/Buyer_UI';
+import OfferDetails from './Components/Blockchain_Contracts/offer_details';
+
+import Chatbot from './madhuni/pages/Chatbot';
 import Home from "./madhuni/pages/Home";
+
 import CropRecommendationForm from "./Pages/cropRecommendationForm";
 import RecommendationResults from "./Pages/recommendationResult";
 
