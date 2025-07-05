@@ -2,6 +2,7 @@
 
 # Virtual environments
 venv/
+venv311/
 ENV/
 env/
 
