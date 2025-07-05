@@ -10,7 +10,7 @@ export default function Marketplace() {
 
   const fetchOffers = async () => {
     try {
-      const response = await fetch("http://localhost:8000/api/marketplace-offers");
+      const response = await fetch("http://localhost:8000/blockchain/marketplace-offers");
       const data = await response.json();
       setOffers(data);
     } catch (err) {
@@ -36,58 +36,76 @@ export default function Marketplace() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto p-6">
-      <h2 className="text-2xl font-bold mb-4">🛒 Marketplace</h2>
+    <div className="min-h-screen bg-gradient-to-b from-green-50 to-white p-6">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-4xl font-extrabold mb-6 text-green-800 flex items-center gap-2">
+          🛒 Marketplace
+        </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <input
-          type="text"
-          name="crop"
-          placeholder="Crop type"
-          className="p-2 border rounded"
-          onChange={handleChange}
-        />
-        <input
-          type="text"
-          name="location"
-          placeholder="Location"
-          className="p-2 border rounded"
-          onChange={handleChange}
-        />
-        <input
-          type="number"
-          name="maxPrice"
-          placeholder="Max price"
-          className="p-2 border rounded"
-          onChange={handleChange}
-        />
-        <button
-          onClick={fetchOffers}
-          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-        >
-          Refresh
-        </button>
-      </div>
+        {/* Filters */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+          <input
+            type="text"
+            name="crop"
+            placeholder="Crop type"
+            className="p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="location"
+            placeholder="Location"
+            className="p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+            onChange={handleChange}
+          />
+          <input
+            type="number"
+            name="maxPrice"
+            placeholder="Max price"
+            className="p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
+            onChange={handleChange}
+          />
+          <button
+            onClick={fetchOffers}
+            className="bg-green-700 text-white p-3 rounded-md hover:bg-green-800 transition"
+          >
+             Refresh
+          </button>
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filteredOffers.map((offer) => (
-          <div key={offer.id} className="border p-4 rounded-lg shadow hover:shadow-lg bg-white">
-            <h3 className="text-xl font-semibold mb-2">{offer.product}</h3>
-            <p>Quantity: <span className="font-medium">{offer.quantity} kg</span></p>
-            <p>Price: <span className="font-medium">Rs. {offer.price}/kg</span></p>
-            <p>Deadline: {offer.deadline}</p>
-            <p>Location: {offer.location}</p>
-            <p>Farmer: <span className="text-sm text-gray-600">{offer.farmer}</span></p>
-            <p>Rating: ⭐ {offer.rating || "N/A"}</p>
-
-            <button
-              onClick={() => alert(`Redirecting to accept offer ID: ${offer.id}`)}
-              className="mt-4 w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
+        {/* Offer Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredOffers.map((offer) => (
+            <div
+              key={offer.id}
+              className="border rounded-2xl shadow-md bg-white hover:shadow-xl transition-all duration-300 overflow-hidden"
             >
-              View & Accept
-            </button>
-          </div>
-        ))}
+              <img
+                src={offer.photo}
+                alt={offer.product}
+                className="w-full h-48 object-cover"
+                onError={(e) => (e.target.style.display = "none")}
+              />
+              <div className="p-5 space-y-2">
+                <h3 className="text-xl font-bold text-green-800">{offer.product}</h3>
+                <p><span className="font-medium">Quantity:</span> {offer.quantity} kg</p>
+                <p><span className="font-medium">Price:</span> Rs. {offer.price}/kg</p>
+                <p><span className="font-medium">Deadline:</span> {offer.deadline}</p>
+                <p><span className="font-medium">Location:</span> {offer.location}</p>
+                <p><span className="font-medium">Delivery:</span> {offer.delivery_method}</p>
+                <p><span className="font-medium">Farmer:</span>  {offer.farmer}</p>
+                <p><span className="font-medium">Rating:</span> ⭐ {offer.rating || "N/A"}</p>
+
+                <button
+                  onClick={() => alert(`Redirecting to accept offer ID: ${offer.id}`)}
+                  className="mt-4 w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition"
+                >
+                  View & Accept
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
