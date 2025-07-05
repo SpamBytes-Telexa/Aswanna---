@@ -4,7 +4,7 @@ from uuid import UUID
 from database import engine, get_db
 from models import Base, CropOffer
 from fastapi.middleware.cors import CORSMiddleware
-
+from routers import predict
 
 from maduni.routes import chat
 
@@ -68,4 +68,4 @@ def get_my_contracts(db: Session = Depends(get_db)):
 '''
 
 app.include_router(contracts.router, prefix="/blockchain", tags=["contracts"])
-
+app.include_router(predict.router, prefix="/ml", tags=["predict"])
