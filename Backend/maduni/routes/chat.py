@@ -3,20 +3,30 @@ from maduni.chatmodel import ChatRequest
 from maduni.services.llama_classifier import classify_query
 from maduni.services.gemini_module import get_gemini_response
 from maduni.services.tavily_module import get_tavily_response
-from maduni.services.translate_module import translate_to_sinhala
+from maduni.services.translate_module import translate_to_sinhala, translate_to_english
 
 router = APIRouter()
 
 @router.post("/chat")
 async def chatbot(request: ChatRequest):
-    query_type = classify_query(request.query)
-
-    if query_type in ["legal", "prices"]:
-        response = get_tavily_response(request.query)
+    print(f"🔹 Incoming language: '{request.language}'")
+    
+    # Step 1: Check if the query is in Sinhala and translate to English if needed
+    if request.language == "sinhala":
+        translated_query = translate_to_english(request.query)  # Sinhala → English
     else:
-        response = get_gemini_response(request.query)
+        translated_query = request.query  # Keep original (English)
 
-    #if request.language == "සිංහල":
-        #response = translate_to_sinhala(response)
+    # Step 2: Classify and get response (Gemini or Tavily)
+    query_type = classify_query(translated_query)
+    
+    if query_type in ["legal", "prices"]:
+        response = get_tavily_response(translated_query)
+    else:
+        response = get_gemini_response(translated_query)
+
+    # Step 3: Translate response back to Sinhala if needed
+    if request.language == "sinhala":
+        response = translate_to_sinhala(response)  # English → Sinhala
 
     return {"response": response}

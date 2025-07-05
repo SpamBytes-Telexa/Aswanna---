@@ -17,7 +17,7 @@ function Chatbot() {
     setMessages(prev => [...prev, { role: 'user', text: query }]);
 
     try {
-      const res = await fetch('http://localhost:8000/chat', {
+      const res = await fetch('http://localhost:8000/chatbot/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ query, language }),
@@ -43,6 +43,33 @@ function Chatbot() {
     sendButton: loading ? 'යැවීම...' : 'යවන්න',
     errorMessage: 'සර්වරය සම්බන්ධ කර ගැනීමට දෝෂයක් ඇත.',
   };
+
+  const formatResponse = (text) => {
+    return text.split('\n').map((line, i) => {
+      if (line.startsWith('**') && line.endsWith('**')) {
+        // Bold headers (e.g., **Topic**)
+        return (
+          <h3 key={i} className="font-bold text-lg mt-4 mb-2 text-green-800">
+            {line.replace(/\*\*/g, '')}
+          </h3>
+        );
+      } else if (line.trim().startsWith('*')) {
+        // Bullet points
+        return (
+          <li key={i} className="ml-5 list-disc">
+            {line.replace('*', '').trim()}
+          </li>
+        );
+      } else if (line.trim() === '') {
+        // Empty lines (add spacing)
+        return <br key={i} />;
+      } else {
+        // Regular paragraphs
+        return <p key={i} className="mb-2">{line}</p>;
+      }
+    });
+  };
+
 
   return (
     <div className="flex flex-col h-screen w-screen bg-gradient-to-br from-green-50 to-green-100">
@@ -77,18 +104,19 @@ function Chatbot() {
             className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             <div
-              className={`max-w-[75%] px-5 py-3 rounded-2xl break-words shadow-md
-                ${
-                  msg.role === 'user'
-                    ? 'bg-green-600 text-white rounded-br-none'
-                    : 'bg-green-100 text-green-900 rounded-bl-none'
-                }`}
-              style={{ wordBreak: 'break-word' }}
+              className={`max-w-[75%] px-5 py-3 rounded-2xl break-words shadow-md ${
+                msg.role === 'user'
+                  ? 'bg-green-600 text-white rounded-br-none'
+                  : 'bg-green-100 text-green-900 rounded-bl-none'
+              }`}
             >
               <span className="font-semibold block mb-1 select-none">
                 {msg.role === 'user' ? texts.userLabel : texts.botLabel}
               </span>
-              {msg.text}
+              {/* Updated: Use formatted response */}
+              <div className="whitespace-pre-wrap">
+                {msg.role === 'bot' ? formatResponse(msg.text) : msg.text}
+              </div>
             </div>
           </div>
         ))}
