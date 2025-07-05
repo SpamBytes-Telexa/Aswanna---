@@ -1,12 +1,12 @@
 from fastapi import FastAPI, Depends
-from sqlalchemy.orm import Session
-from uuid import UUID
-from database import engine, get_db
-from models import Base, CropOffer
+#from sqlalchemy.orm import Session
+#from uuid import UUID
+#from database import engine, get_db
+#from models import Base, CropOffer
 from fastapi.middleware.cors import CORSMiddleware
 app = FastAPI()
 
-Base.metadata.create_all(bind=engine)
+# Base.metadata.create_all(bind=engine)
 
 origins = [
     "http://localhost:5173",  # React dev server origin
@@ -25,6 +25,7 @@ app.add_middleware(
 def read_root():
     return {"message": "Backend running ✅"}
 
+'''
 @app.get("/api/my-contracts")
 def get_my_contracts(db: Session = Depends(get_db)):
     # Hardcoded UUID string
@@ -47,3 +48,5 @@ def get_my_contracts(db: Session = Depends(get_db)):
             
         })
     return {"contracts": contracts}
+
+'''
