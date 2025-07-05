@@ -73,74 +73,81 @@ function Chatbot() {
 
   return (
     <div className="flex flex-col h-screen w-screen bg-gradient-to-br from-green-50 to-green-100">
-      <header className="bg-green-700 text-white p-5 text-center text-2xl font-extrabold tracking-wide shadow-md">
+      <header className="bg-green-900 text-white p-3 text-center text-2xl font-extrabold tracking-wide shadow-md">
         {texts.header}
       </header>
 
-      <div className="p-5 bg-white border-b border-green-300">
-        <label className="block text-sm font-semibold text-green-800 mb-2">
-          {texts.selectLanguage}
-        </label>
-        <select
-          value={language}
-          onChange={e => setLanguage(e.target.value)}
-          className="w-full max-w-xs border border-green-300 rounded-lg p-3 shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400 transition"
-        >
-          <option value="english">English</option>
-          <option value="sinhala">සිංහල</option>
-        </select>
-      </div>
 
-      <main className="flex-1 overflow-y-auto p-6 space-y-5">
-        {messages.length === 0 && (
-          <p className="text-green-400 text-center mt-12 italic select-none">
-            {texts.startConversation}
-          </p>
-        )}
 
-        {messages.map((msg, idx) => (
-          <div
-            key={idx}
-            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-          >
-            <div
-              className={`max-w-[75%] px-5 py-3 rounded-2xl break-words shadow-md ${
-                msg.role === 'user'
-                  ? 'bg-green-600 text-white rounded-br-none'
-                  : 'bg-green-100 text-green-900 rounded-bl-none'
-              }`}
-            >
-              <span className="font-semibold block mb-1 select-none">
-                {msg.role === 'user' ? texts.userLabel : texts.botLabel}
-              </span>
-              {/* Updated: Use formatted response */}
-              <div className="whitespace-pre-wrap">
-                {msg.role === 'bot' ? formatResponse(msg.text) : msg.text}
-              </div>
-            </div>
-          </div>
-        ))}
-        <div ref={messagesEndRef} />
-      </main>
+<div className="px-4 py-1 bg-white border-b border-green-200 flex items-center space-x-2">
+  <label className="text-base font-medium text-green-700">
+    {texts.selectLanguage}
+  </label>
+  <select
+    value={language}
+    onChange={e => setLanguage(e.target.value)}
+    className="border border-green-200 rounded-md p-1.5 text-sm bg-green-50 focus:outline-none focus:ring-1 focus:ring-green-300"
+  >
+    <option value="english">English</option>
+    <option value="sinhala">සිංහල</option>
+  </select>
+</div>
 
-      <footer className="p-5 bg-white border-t border-green-300 flex items-center space-x-3 shadow-lg">
-        <input
-          type="text"
-          value={query}
-          onChange={e => setQuery(e.target.value)}
-          onKeyDown={e => e.key === 'Enter' && sendMessage()}
-          placeholder={texts.placeholder}
-          className="flex-grow border border-green-300 rounded-2xl px-5 py-3 text-green-900 placeholder-green-400 focus:outline-none focus:ring-2 focus:ring-green-400 shadow-sm transition"
-          disabled={loading}
-        />
-        <button
-          onClick={sendMessage}
-          disabled={loading}
-          className="bg-green-700 text-white px-8 py-3 rounded-2xl font-semibold hover:bg-green-800 transition disabled:opacity-60 disabled:cursor-not-allowed shadow"
-        >
-          {loading ? 'යැවීම...' : 'යවන්න'}
-        </button>
-      </footer>
+<main className="flex-1 overflow-y-auto p-4 space-y-4 bg-green-50">
+  {messages.length === 0 && (
+    <p className="text-green-400 text-center mt-12 italic select-none">
+      {texts.startConversation}
+    </p>
+  )}
+
+  {messages.map((msg, idx) => (
+    <div
+  key={idx}
+  className={`flex flex-col ${
+    msg.role === 'user' ? 'items-end' : 'items-start'
+  }`}
+>
+  <span className="text-base text-green-700 font-semibold mb-1 px-2">
+    {msg.role === 'user' ? texts.userLabel : texts.botLabel}
+  </span>
+  <div
+    className={`max-w-[75%] px-4 py-2 rounded-2xl break-words shadow-sm ${
+      msg.role === 'user'
+        ? 'bg-green-200 text-green-900 rounded-br-none'
+        : 'bg-white text-green-800 border border-green-100 rounded-bl-none'
+    }`}
+  >
+    <div className="whitespace-pre-wrap">
+      {msg.role === 'bot' ? formatResponse(msg.text) : msg.text}
+    </div>
+  </div>
+</div>
+
+
+    
+  ))}
+  <div ref={messagesEndRef} />
+</main>
+
+<footer className="p-4 bg-white border-t border-green-200 flex items-center space-x-2 shadow">
+  <input
+    type="text"
+    value={query}
+    onChange={e => setQuery(e.target.value)}
+    onKeyDown={e => e.key === 'Enter' && sendMessage()}
+    placeholder={texts.placeholder}
+    className="flex-grow border border-green-200 rounded-xl px-4 py-2 text-green-900 placeholder-green-900 focus:outline-none focus:ring-2 focus:ring-green-300 bg-green-50 shadow-sm transition"
+    disabled={loading}
+  />
+  <button
+    onClick={sendMessage}
+    disabled={loading}
+    className="bg-green-900 text-white px-6 py-2 rounded-xl font-semibold hover:bg-green-600 transition disabled:opacity-60 disabled:cursor-not-allowed shadow"
+  >
+    {loading ? 'යැවීම...' : 'යවන්න'}
+  </button>
+</footer>
+
     </div>
   );
 }
