@@ -63,6 +63,7 @@ export default function MyContracts() {
   return (
     <div
   className="p-6 min-h-screen bg-gradient-to-b from-green-50 to-white bg-fixed bg-cover"
+
     style={{
       backgroundImage: `url(${bimage})`,
       backgroundRepeat: "no-repeat",
@@ -75,6 +76,7 @@ export default function MyContracts() {
     <h2 className="text-4xl font-bold mb-6 text-center text-green-800 flex items-center justify-center gap-2">
       🌱 My Crop Contracts
     </h2>
+
 
     <div className="overflow-x-auto">
       <table className="min-w-full divide-y divide-green-200 text-sm">
