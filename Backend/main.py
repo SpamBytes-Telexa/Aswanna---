@@ -4,7 +4,13 @@ from fastapi import FastAPI, Depends
 #from database import engine, get_db
 #from models import Base, CropOffer
 from fastapi.middleware.cors import CORSMiddleware
+
+from maduni.routes import chat
+
+
 app = FastAPI()
+
+
 
 # Base.metadata.create_all(bind=engine)
 
@@ -24,6 +30,8 @@ app.add_middleware(
 @app.get("/")
 def read_root():
     return {"message": "Backend running ✅"}
+
+app.include_router(chat.router)
 
 '''
 @app.get("/api/my-contracts")
