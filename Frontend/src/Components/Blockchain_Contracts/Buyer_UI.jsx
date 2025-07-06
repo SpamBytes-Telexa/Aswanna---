@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Marketplace() {
+
+                 
+  const navigate = useNavigate();
   const [offers, setOffers] = useState([]);
   const [filters, setFilters] = useState({
     crop: "",
@@ -96,12 +100,17 @@ export default function Marketplace() {
                 <p><span className="font-medium">Farmer:</span>  {offer.farmer}</p>
                 <p><span className="font-medium">Rating:</span> ⭐ {offer.rating || "N/A"}</p>
 
+
                 <button
-                  onClick={() => alert(`Redirecting to accept offer ID: ${offer.id}`)}
+                  onClick={() => {
+                    alert(`Redirecting to accept offer ID: ${offer.id}`);
+                    navigate(`/offer/${offer.id}`);
+                  }}
                   className="mt-4 w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700 transition"
                 >
                   View & Accept
                 </button>
+
               </div>
             </div>
           ))}
