@@ -6,35 +6,15 @@ import Farmer_contracts from './Components/Blockchain_Contracts/farmer_contracts
 import BuyerUI from './Components/Blockchain_Contracts/Buyer_UI';
 import OfferDetails from './Components/Blockchain_Contracts/offer_details';
 import Chatbot from './madhuni/pages/Chatbot';
-//import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-//import Home from './madhuni/pages/Home';
-
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PlantDisease from './Raleesa/plant_disease_recogntion';
-
-
-
-//import FarmerForm from "./Components/Blockchain_Contracts/farmer_from";
-//import Farmer_contracts from "./Components/Blockchain_Contracts/farmer_contracts";
-//import BuyerUI from "./Components/Blockchain_Contracts/Buyer_UI";
-//import OfferDetails from "./Components/Blockchain_Contracts/offer_details";
-
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useNavigate,
-} from "react-router-dom";
-
-import FarmerForm from './Components/Blockchain_Contracts/farmer_from';
-import Farmer_contracts from './Components/Blockchain_Contracts/farmer_contracts';
-import BuyerUI from './Components/Blockchain_Contracts/Buyer_UI';
-import OfferDetails from './Components/Blockchain_Contracts/offer_details';
-
-import Chatbot from './madhuni/pages/Chatbot';
 import Home from "./madhuni/pages/Home";
-
 import CropRecommendationForm from "./Pages/cropRecommendationForm";
 import RecommendationResults from "./Pages/recommendationResult";
+import { useNavigate } from 'react-router-dom';
+import SignUp from './Components/SignUp/sign_up';
+import Login from './Components/Login/login';
+import { AuthProvider } from './Components/context/AuthContext';
 
 const App = () => {
   const CropRecommendationFormWithNav = () => {
@@ -46,30 +26,31 @@ const App = () => {
   };
 
   return (
-    <div>
       <Router>
-        <Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<Home/>}/>
+            <Route path="/chatbot" element={<Chatbot/>}/>
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/farmerform" element={<FarmerForm />} />
+            <Route path="/contracts" element={<Farmer_contracts />} />
+            <Route path="/buyer" element={<BuyerUI />} />
+            <Route path="/offer/:id" element={<OfferDetails />} />
+            <Route
+              path="/crop-recommendation"
+              element={<CropRecommendationFormWithNav />}
+            />
+            <Route
+              path="/recommendation-results"
+              element={<RecommendationResults />}
+            />
 
-          <Route path="/" element={<Home/>}/>
-          <Route path="/chatbot" element={<Chatbot/>}/>
-
-          <Route path="/farmerform" element={<FarmerForm />} />
-          <Route path="/contracts" element={<Farmer_contracts />} />
-          <Route path="/buyer" element={<BuyerUI />} />
-          <Route path="/offer/:id" element={<OfferDetails />} />
-          <Route
-            path="/crop-recommendation"
-            element={<CropRecommendationFormWithNav />}
-          />
-          <Route
-            path="/recommendation-results"
-            element={<RecommendationResults />}
-          />
-
-          <Route path="plantDisease" element={<PlantDisease/>}/>
-        </Routes>
+            <Route path="plantDisease" element={<PlantDisease/>}/>
+          </Routes>
+        </AuthProvider>
       </Router>
-    </div>
+    
   );
 };
 
