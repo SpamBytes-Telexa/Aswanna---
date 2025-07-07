@@ -49,3 +49,15 @@ class ContractCreate(BaseModel):
     buyer_id: UUID
     tx_hash: str
     contract_address: str
+
+class OfferResponse(BaseModel):
+    id: int
+    product: str
+    farmer_wallet: str
+    price: float
+    quantity: int
+    contract_address: str | None  # Optional
+    # Add other fields you want to expose
+
+    class Config:
+        orm_mode = True
