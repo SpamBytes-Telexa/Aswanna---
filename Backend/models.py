@@ -15,6 +15,8 @@ class User(Base):
     email = Column(String)
     role = Column(String)
     rating = Column(Float)
+    password_hash = Column(String)  # Store hashed password
+
 
 class CropOffer(Base):
     __tablename__ = "crop_offers"
@@ -61,3 +63,15 @@ class OfferResponse(BaseModel):
 
     class Config:
         orm_mode = True
+class UserBase(BaseModel):
+    wallet_address: str
+    user_name: str
+    email: str
+    password_hash: str
+    role: str  # 'farmer' or 'buyer'
+
+class UserLogin(BaseModel):
+    email: str
+    password: str    
+
+    
