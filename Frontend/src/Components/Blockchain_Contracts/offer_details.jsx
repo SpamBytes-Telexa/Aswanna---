@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { ethers } from "ethers";
+import OfferContractArtifact from "../../contracts/OfferContract.json"; // Adjust path as necessary
+
 
 export default function OfferDetails() {
   const { id } = useParams();
@@ -49,39 +51,62 @@ export default function OfferDetails() {
     }
   };
 
+  
   const handleAccept = async () => {
     if (!walletAddress) return alert("Connect wallet first");
     if (!buyerId) return alert("Buyer not identified");
     if (!offer || !ethPrice) return;
 
-    const totalRs = offer.price * offer.quantity;
-    const totalEth = ethers.parseEther((totalRs / ethPrice).toFixed(6));
-    const provider = new ethers.BrowserProvider(window.ethereum);
-    const signer = await provider.getSigner();
+    try {
+      const totalRs = offer.price * offer.quantity;
+      const pricePerUnitInEth = (offer.price / ethPrice).toFixed(6);
+      const totalEth = ethers.parseEther((totalRs / ethPrice).toFixed(6));
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
 
-    const tx = await signer.sendTransaction({
-      to: offer.farmer_wallet,
-      value: totalEth,
-    });
+      // Deploy OfferContract
+      const factory = new ethers.ContractFactory(
+        OfferContractArtifact.abi,
+        OfferContractArtifact.bytecode,
+        signer
+      );
 
-    const response = await fetch("http://localhost:8000/blockchain/contracts", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        offer_id: offer.id,
-        buyer_id: buyerId,
-        tx_hash: tx.hash,
-        contract_address: "0xContractAddressPlaceholder",
-      }),
-    });
+      const contract = await factory.deploy(
+        walletAddress,               // buyer
+        offer.farmer_wallet,         // farmer
+        offer.quantity,              // quantity
+        ethers.parseEther(pricePerUnitInEth), // pricePerUnit
+        { value: totalEth }          // initial payment
+      );
 
-    const result = await response.json();
-    if (response.ok) {
-      alert("Payment successful & contract created! Tx: " + tx.hash);
-    } else {
-      alert("Payment sent but contract creation failed: " + result.detail);
+      await contract.waitForDeployment();
+      const contractAddress = await contract.getAddress();
+      console.log("✅ Deployed contract address:", contractAddress);
+
+      // Send tx hash and contract address to backend
+      const response = await fetch("http://localhost:8000/blockchain/contracts", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          offer_id: offer.id,
+          buyer_id: buyerId,
+          tx_hash: contract.deploymentTransaction().hash,
+          contract_address: contractAddress
+        }),
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        alert("Contract deployed & payment successful! Tx: " + contract.deploymentTransaction().hash);
+      } else {
+        alert("Contract deployed but DB failed: " + result.detail);
+      }
+    } catch (err) {
+      console.error("Error during deployment/payment:", err);
+      alert("Deployment or payment failed.");
     }
   };
+
 
   if (!offer) return <div className="p-6 text-center text-gray-500">Loading offer details...</div>;
 
