@@ -3,7 +3,9 @@ from uuid import UUID, uuid4
 from sqlalchemy import Column, String, Boolean, Float, Date, DateTime, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID as SA_UUID
 from database import Base
-from datetime import datetime
+from datetime import datetime,date
+from typing import Optional
+from fastapi import Form, File, UploadFile
 
 # SQLAlchemy models
 
@@ -30,7 +32,7 @@ class CropOffer(Base):
     photo = Column(String)
     farmer_id = Column(SA_UUID(as_uuid=True), ForeignKey("users.id"))
     status = Column(String)
-    contract_address = Column(String)
+    
 
 class Contract(Base):
     __tablename__ = "contracts"
@@ -74,4 +76,25 @@ class UserLogin(BaseModel):
     email: str
     password: str    
 
-    
+class NewOfferForm:
+    def __init__(
+        self,
+        product: str = Form(...),
+        quantity: float = Form(...),
+        price: float = Form(...),
+        deadline: date = Form(...),
+        photo: Optional[UploadFile] = File(None),
+        delivery_method: str = Form(...),
+        location: str = Form(...),
+        farmer_id: str = Form(...),
+       
+    ):
+        self.product = product
+        self.quantity = quantity
+        self.price = price
+        self.deadline = deadline
+        self.photo = photo
+        self.delivery_method = delivery_method
+        self.location = location
+        self.farmer_id = UUID(farmer_id)
+        

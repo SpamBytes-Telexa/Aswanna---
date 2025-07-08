@@ -1,12 +1,17 @@
 import { useEffect, useState } from "react";
-import bimage from "../../assets/contracts.jpeg";
+import bimage from "../../../assets/contracts.jpeg";
+import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie"
+import Navbar from "./f_navbar";
 export default function MyContracts() {
   const [contracts, setContracts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState(null);
+  const[user_name, setUserName] = useState("");
 
   const fetchContracts = async () => {
     try {
-      const response = await fetch("http://localhost:8000/blockchain/my-contracts");
+      const response = await fetch(`http://localhost:8000/blockchain/my-contracts/${userId}`);
       const data = await response.json();
       setContracts(data.contracts);
     } catch (error) {
@@ -17,8 +22,22 @@ export default function MyContracts() {
   };
 
   useEffect(() => {
-    fetchContracts();
+    const token = Cookies.get("accessToken");
+    console.log("Access Token:", token);
+    if (token) {
+      const decoded = jwtDecode(token);
+      console.log("Decoded JWT:", decoded);
+      setUserId(decoded.user_id); // Use state updater
+      setUserName(decoded.sub); // Set user name from decoded token
+      console.log("Decoded user ID:", decoded.user_id);
+    }
   }, []);
+
+  useEffect(() => {
+    if (userId) {
+      fetchContracts(); // Run only when userId is available
+    }
+  }, [userId]);
 
   const handleMarkDelivered = async (contractId) => {
     try {
@@ -61,7 +80,10 @@ export default function MyContracts() {
   };
 
   return (
+    <>
+      <Navbar />
     <div
+     
   className="p-6 min-h-screen bg-gradient-to-b from-green-50 to-white bg-fixed bg-cover"
 
     style={{
@@ -73,9 +95,14 @@ export default function MyContracts() {
 
 >
   <div className="bg-white bg-opacity-90 backdrop-blur-md p-6 rounded-2xl shadow-2xl max-w-6xl mx-auto">
+    <h1 className="text-3xl md:text-4xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-green-600 via-lime-500 to-emerald-600 mb-4 drop-shadow-md">
+       Hello, {user_name}!
+    </h1>
+
     <h2 className="text-4xl font-bold mb-6 text-center text-green-800 flex items-center justify-center gap-2">
       🌱 My Crop Contracts
     </h2>
+
 
 
     <div className="overflow-x-auto">
@@ -142,6 +169,6 @@ export default function MyContracts() {
     </div>
   </div>
 </div>
-
+    </>
   );
 }

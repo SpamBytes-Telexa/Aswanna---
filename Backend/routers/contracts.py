@@ -1,20 +1,18 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Form, File, UploadFile
 from sqlalchemy.orm import Session
-from sqlalchemy import func
+from sqlalchemy import func, text
 from uuid import UUID
 from datetime import date
+import shutil
 from database import engine, get_db
 from models import Base, CropOffer,User,Contract,ContractCreate
 from fastapi.middleware.cors import CORSMiddleware
+from typing import Optional
 
-
-router=APIRouter();
-@router.get("/my-contracts")
-def get_my_contracts(db: Session = Depends(get_db)):
-    # Hardcoded UUID string
-    hardcoded_farmer_id = UUID("1cdfb24f-a902-4bac-825a-074973263a3d")
-    
-    offers = db.query(CropOffer).filter(CropOffer.farmer_id == hardcoded_farmer_id).all()
+router = APIRouter()
+@router.get("/my-contracts/{user_id}")  # ✅ Add slash before {user_id}
+def get_my_contracts(user_id: str, db: Session = Depends(get_db)):  # ✅ Add type hint
+    offers = db.query(CropOffer).filter(CropOffer.farmer_id == user_id).all()
 
     contracts = []
     for offer in offers:
@@ -25,10 +23,9 @@ def get_my_contracts(db: Session = Depends(get_db)):
             "status": offer.status,
             "delivery_method": offer.delivery_method,
             "location": offer.location,
-            "quantity": offer.quantity, 
+            "quantity": offer.quantity,
             "deadline": offer.deadline.isoformat() if offer.deadline else None,
-            "photo": offer.photo,   
-            
+            "photo": offer.photo,
         })
     return {"contracts": contracts}
 
@@ -124,3 +121,69 @@ def get_buyer_by_wallet(wallet_address: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Buyer not found")
     return {"id": buyer.id}
 
+@router.get("/get_wallet_address/{user_id}")
+def get_wallet_address(user_id: str, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    return {"wallet_address": user.wallet_address}
+
+
+@router.post("/post_offer")
+async def register_offer(
+    product: str = Form(...),
+    quantity: float = Form(...),
+    price: float = Form(...),
+    deadline: date = Form(...),
+    photo: Optional[UploadFile] = File(None),
+    delivery_method: str = Form(...),
+    location: str = Form(...),
+    farmer_id: UUID = Form(...),
+    db: Session = Depends(get_db),
+):
+    try:
+        # Handle optional photo
+        photo_path = None
+        if photo:
+            photo_path = f"static/images/{photo.filename}"
+            with open(photo_path, "wb") as buffer:
+                shutil.copyfileobj(photo.file, buffer)
+
+        # Log for debugging
+        print({
+            "product": product,
+            "quantity": quantity,
+            "price": price,
+            "deadline": deadline,
+            "photo": photo_path,
+            "delivery_method": delivery_method,
+            "location": location,
+            "farmer_id": str(farmer_id)
+        })
+
+        query = text("""
+            CALL db_create_offer(
+                :product, :quantity, :price, :deadline, :photo,
+                :delivery_method, :location, :farmer_id
+            )
+        """)
+
+        db.execute(query, {
+            "product": product,
+            "quantity": quantity,
+            "price": price,
+            "deadline": deadline,
+            "photo": photo_path,
+            "delivery_method": delivery_method,
+            "location": location,
+            "farmer_id": str(farmer_id),
+        })
+
+        db.commit()
+        return {"message": "Crop offer posted successfully."}
+
+    except Exception as e:
+        db.rollback()
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=400, detail=f"Failed to post offer: {str(e)}")
