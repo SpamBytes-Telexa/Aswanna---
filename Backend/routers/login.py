@@ -25,8 +25,6 @@ def register_user(user: UserBase, db: Session = Depends(get_db)):
             "password_hash": hashed_password,
             "role": user.role
         })
-
-
         db.commit()
     except Exception as e:
         db.rollback()
