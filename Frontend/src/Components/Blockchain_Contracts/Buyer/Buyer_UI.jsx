@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import Navbar from "./b_navbar";
+import Cookies  from "js-cookie";
+import { jwtDecode } from "jwt-decode";
 export default function Marketplace() {
 
                  
   const navigate = useNavigate();
   const [offers, setOffers] = useState([]);
+  const [userId, setUserId] = useState(null);
+  const [userName, setUserName] = useState("");
   const [filters, setFilters] = useState({
     crop: "",
     location: "",
@@ -21,7 +25,17 @@ export default function Marketplace() {
       console.error("Failed to fetch offers", err);
     }
   };
-
+  useEffect(() => {
+      const token = Cookies.get("accessToken");
+      console.log("Access Token:", token);
+      if (token) {
+        const decoded = jwtDecode(token);
+        console.log("Decoded JWT:", decoded);
+        setUserId(decoded.user_id); // Use state updater
+        setUserName(decoded.sub); // Set user name from decoded token
+        console.log("Decoded user ID:", decoded.user_id);
+      }
+    }, []);
   useEffect(() => {
     fetchOffers();
   }, []);
@@ -40,7 +54,17 @@ export default function Marketplace() {
   };
 
   return (
+    <>
+    <Navbar />
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-white p-6">
+      <div className="mb-8 rounded-2xl border border-green-200 bg-green-50/50 p-6 shadow-sm hover:shadow-md transition">
+        <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-green-800 flex items-center gap-2 mb-3">
+          <span>Hello {userName} </span>
+        </h1>
+        <p className="text-gray-700 text-lg leading-relaxed">
+          Welcome to the Marketplace! Discover fresh agricultural offers directly from our trusted farmers. Enjoy safe transactions and quality produce! 
+        </p>
+      </div>
       <div className="max-w-7xl mx-auto">
         <h2 className="text-4xl font-extrabold mb-6 text-green-800 flex items-center gap-2">
           🛒 Marketplace
@@ -117,5 +141,6 @@ export default function Marketplace() {
         </div>
       </div>
     </div>
+    </>
   );
 }

@@ -3,8 +3,8 @@ import React from 'react'
 
 import FarmerForm from './Components/Blockchain_Contracts/Farmer/farmer_form';
 import Farmer_contracts from './Components/Blockchain_Contracts/Farmer/farmer_contracts';
-import BuyerUI from './Components/Blockchain_Contracts/Buyer_UI';
-import OfferDetails from './Components/Blockchain_Contracts/offer_details';
+import BuyerUI from './Components/Blockchain_Contracts/Buyer/Buyer_UI';
+import OfferDetails from './Components/Blockchain_Contracts/Buyer/offer_details';
 import Chatbot from './madhuni/pages/Chatbot';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PlantDisease from './Raleesa/plant_disease_recogntion';
