@@ -63,12 +63,9 @@ def get_marketplace_offers(db: Session = Depends(get_db)):
 
     return result
 @router.get("/buyer_accepting/{offer_id}")
-def get_offer_details(db: Session = Depends(get_db)):
-    # Hardcoded Offer ID (just for now)
-    hardcoded_offer_id = UUID("18588f52-9ddf-46d3-9789-6d2426ef2a9f")
-
+def get_offer_details(offer_id ,db: Session = Depends(get_db)):
     # Fetch the offer
-    offer = db.query(CropOffer).filter(CropOffer.id == hardcoded_offer_id).first()
+    offer = db.query(CropOffer).filter(CropOffer.id == offer_id).first()
     if not offer:
         return {"error": "Offer not found"}
 
@@ -116,9 +113,13 @@ def create_contract(data: ContractCreate, db: Session = Depends(get_db)):
 
 @router.get("/by_wallet/{wallet_address}")
 def get_buyer_by_wallet(wallet_address: str, db: Session = Depends(get_db)):
-    buyer = db.query(User).filter(User.wallet_address == wallet_address).first()
+    buyer = db.query(User).filter(
+        func.lower(User.wallet_address) == wallet_address.lower()
+    ).first()
+
     if not buyer:
-        raise HTTPException(status_code=404, detail="Buyer not found")
+        raise HTTPException(status_code=404, detail="Buyer not found or not registered.")
+
     return {"id": buyer.id}
 
 @router.get("/get_wallet_address/{user_id}")
