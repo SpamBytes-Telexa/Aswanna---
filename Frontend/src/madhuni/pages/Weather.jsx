@@ -1,10 +1,15 @@
 import React, { useState } from 'react';
 import Navbar from "../components/Navbar";
+import Lottie from "lottie-react";
 
 import rainyBg from "../../assets/rainy.png";
 import sunnyBg from "../../assets/rainy.png";
 import cloudyBg from "../../assets/cloudy.jpg";
 import defaultBg from "../../assets/rainy.png";
+import windAnimation from "../../assets/animation/wind.json";
+import leaveanimation from "../../assets/animation/Coala02.json";
+import windleaveanimation from "../../assets/animation/windleave.json";
+
 
 const WeatherApp = () => {
   const [city, setCity] = useState('');
@@ -87,6 +92,16 @@ const WeatherApp = () => {
               සෙවීම
             </button>
           </div>
+
+          {forecast.length === 0 && (
+            <div className="flex justify-center items-center">
+              <Lottie
+                animationData={leaveanimation}
+                loop
+                className="w-[2000px] h-[400px]"
+              />
+            </div>
+          )}
 
           <div
             className="flex overflow-x-auto space-x-6 pb-6 px-4 w-full scroll-smooth"
