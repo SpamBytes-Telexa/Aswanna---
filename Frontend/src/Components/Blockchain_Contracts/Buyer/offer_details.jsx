@@ -103,8 +103,8 @@ export default function OfferDetails() {
 
     try {
       const totalRs = offer.price * offer.quantity;
-      const ethAmount = (totalRs / ethPrice).toString();
-      const pricePerUnitEth = (offer.price / ethPrice).toString();
+      const ethAmount = (totalRs / ethPrice).toFixed(18); // max 18 decimals
+      const pricePerUnitEth = (offer.price / ethPrice).toFixed(18); // max 18
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
 
@@ -144,9 +144,10 @@ export default function OfferDetails() {
         alert("Contract deployed but DB failed: " + result.detail);
       }
     } catch (err) {
-      console.error("Error during deployment/payment:", err);
-      alert("Deployment or payment failed.");
+      console.error("❌ Deployment/payment failed:", err);
+      alert(`Deployment or payment failed: ${err.message || err}`);
     }
+
   };
 
   if (error) {
