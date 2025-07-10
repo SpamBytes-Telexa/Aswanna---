@@ -15,6 +15,7 @@ import OfferDetails from './Components/Blockchain_Contracts/offer_details';
 
 import Chatbot from './madhuni/pages/Chatbot';
 import Home from "./madhuni/pages/Home";
+import Weather from "./madhuni/pages/Weather"
 
 import CropRecommendationForm from "./Pages/cropRecommendationForm";
 import RecommendationResults from "./Pages/recommendationResult";
@@ -35,6 +36,8 @@ const App = () => {
 
           <Route path="/" element={<Home/>}/>
           <Route path="/chatbot" element={<Chatbot/>}/>
+          <Route path="/wheather" element={<Weather/>}/>
+
 
           <Route path="/farmerform" element={<FarmerForm />} />
           <Route path="/contracts" element={<Farmer_contracts />} />

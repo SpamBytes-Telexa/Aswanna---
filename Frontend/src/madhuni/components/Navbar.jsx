@@ -16,13 +16,7 @@ function Navbar() {
         <div className="flex items-center gap-2">
           <HomeIcon className="cursor-pointer hover:text-yellow-300" fontSize="small" />
 
-          <button className="bg-white hover:bg-gray-200 text-black font-medium px-3 py-1 rounded text-xs">
-            Login
-          </button>
-
-          <button className="bg-white hover:bg-gray-200 text-black font-medium px-3 py-1 rounded text-xs">
-            Register
-          </button>
+          
 
           <button className="bg-gray-900 hover:bg-gray-700 px-3 py-1 rounded text-xs">
             Logout

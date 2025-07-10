@@ -9,8 +9,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from maduni.routes import chat
 from maduni.routes import weather
 from maduni.routes import location
-from maduni.routes import weatherByCity
-
+from maduni.routes import weather16
 
 
 #from routers import contracts;    
@@ -38,9 +37,10 @@ def read_root():
 
 
 app.include_router(chat.router, prefix='/chatbot', tags=['Chatbot'])
-app.include_router(weather.router, prefix='/weather', tags=['Weaather'])
-app.include_router(location.router, prefix='/location', tags=['Location'])
-app.include_router(weatherByCity.router, prefix='/weatherbycity', tags=['Weather by city'])
+app.include_router(weather.router, prefix='/weather', tags=['Weather'])
+app.include_router(location.router, prefix='/location', tags=['Weather'])
+app.include_router(weather16.router, prefix='/weatherfor16days', tags=['Weather'])
+
 
 
 

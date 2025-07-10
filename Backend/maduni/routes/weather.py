@@ -1,5 +1,8 @@
 from fastapi import APIRouter, Query
+from pydantic import BaseModel
 import requests
+from maduni.services.translate_module import translate_to_sinhala, translate_to_english
+
 
 router = APIRouter()
 
@@ -42,3 +45,16 @@ async def get_current_weather(
             "status": "error",
             "message": str(e)
         }
+    
+class TextInput(BaseModel):
+    text: str
+    
+@router.post("/sinhala-to-english")
+async def sinhala_to_english(data: TextInput):
+    translated = translate_to_english(data.text)
+    return { "english": translated }
+
+@router.post("/english-to-sinhala")
+async def english_to_sinhala(data: TextInput):
+    translated = translate_to_sinhala(data.text)
+    return { "sinhala": translated }

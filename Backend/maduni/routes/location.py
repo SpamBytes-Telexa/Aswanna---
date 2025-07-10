@@ -8,6 +8,7 @@ NOMINATIM_URL = "https://nominatim.openstreetmap.org/search"
 @router.get("/get-coordinates")
 async def get_coordinates(city: str = Query(..., description="City name to get coordinates")):
     try:
+        print(f"Fetching coordinates for: {city}")
         response = requests.get(
             NOMINATIM_URL,
             params={
@@ -19,6 +20,7 @@ async def get_coordinates(city: str = Query(..., description="City name to get c
                 "User-Agent": "YourAppName/1.0 (your-email@example.com)"
             }
         )
+        print(f"🌐Request URL: {response.url}")
         if response.status_code != 200:
             return {
                 "status": "error",
@@ -35,6 +37,7 @@ async def get_coordinates(city: str = Query(..., description="City name to get c
 
         lat = data[0]["lat"]
         lon = data[0]["lon"]
+        print(f"✅ Coordinates: lat={lat}, lon={lon}") 
 
         return {
             "status": "success",
