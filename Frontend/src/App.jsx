@@ -9,6 +9,11 @@ import Chatbot from './madhuni/pages/Chatbot';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PlantDisease from './Raleesa/plant_disease_recogntion';
 import Home from "./madhuni/pages/Home";
+
+import Weather from "./madhuni/pages/Weather"
+
+
+
 import CropRecommendationForm from "./Pages/cropRecommendationForm";
 import RecommendationResults from "./Pages/recommendationResult";
 import { useNavigate } from 'react-router-dom';
@@ -27,10 +32,19 @@ const App = () => {
 
   return (
       <Router>
+
+      
+
+          
+          
+
+
+          
         <AuthProvider>
           <Routes>
             <Route path="/" element={<Home/>}/>
             <Route path="/chatbot" element={<Chatbot/>}/>
+            <Route path="/weatherforecast" element={<Weather/>}/>
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route path="/farmerform" element={<FarmerForm />} />
@@ -49,6 +63,7 @@ const App = () => {
             <Route path="plantDisease" element={<PlantDisease/>}/>
           </Routes>
         </AuthProvider>
+
       </Router>
     
   );

@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import ChatbotButton from "../components/chatbotbutton";
 import Navbar from "../components/Navbar";
 import { motion } from "framer-motion";
@@ -9,31 +10,37 @@ const features = [
     title: "පළිබෝධ හඳුනා ගැනීම",
     emoji: "📷",
     description: "ඔබගේ බෝගයේ රෝග සහ පළිබෝධ ඡායාරූපයකින් හඳුනා ගන්න",
+    path: "pestdetection"
   },
   {
     title: "වගා නිර්දේශ",
     emoji: "🌱",
     description: "භූමි ප්‍රදේශය, කාලගුණය අනුව සුදුසු බෝග තෝරන්න",
+    path: "croprecommendation",
   },
   {
     title: "වෙළඳ මිල තොරතුරු",
     emoji: "💰",
     description: "වෙළඳපොලේ ඇති බෝග මිල දිස්ත්‍රික්ක අනුව බලන්න",
+    path: "marketprices",
   },
   {
     title: "කාලගුණ අනාවැකි",
     emoji: "🌦",
     description: "අලුත්ම කාලගුණ තොරතුරු සහ අනතුරු ඇඟවීම්",
+    path: "weatherforecast",
   },
   {
     title: "ගොවියන්ගේ සමාජ ජාලය",
     emoji: "🧑‍🌾",
     description: "වෙනත් ගොවින් සමඟ පළපුරුදු හුවමාරු කරන්න",
+    path: "farmercommunity",
   },
   {
     title: "වට්ටම් සහ මිල",
     emoji: "🏷",
     description: "පොහොර හා උපකරණ සඳහා වට්ටම් බලන්න",
+    path: "discounts",
   },
 ];
 
@@ -171,8 +178,8 @@ const Home = () => {
             className="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
         >
             {features.map((feature, index) => (
+            <Link to={`/${feature.path}`} key={index}>
             <motion.div
-                key={index}
                 variants={itemVariants}
                 whileHover={{ 
                 y: -8, 
@@ -205,6 +212,7 @@ const Home = () => {
                 {/* Animated underline */}
                 <div className="absolute bottom-0 left-0 w-0 h-1 bg-yellow-400 group-hover:w-full transition-all duration-500"></div>
             </motion.div>
+            </Link>
             ))}
         </motion.div>
         </section>
