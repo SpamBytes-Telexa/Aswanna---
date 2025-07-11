@@ -3,8 +3,10 @@ import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 import Navbar from "./f_navbar";
 import bimage from "../../../assets/leaves.jpeg";
+import { useTranslation } from "react-i18next";
 
 const PostAdvertisementForm = () => {
+  const { t, i18n } = useTranslation();
   const [formData, setFormData] = useState({
     product: "",
     quantity: "",
@@ -25,7 +27,6 @@ const PostAdvertisementForm = () => {
     if (token) {
       try {
         const decoded = jwtDecode(token);
-        console.log("Decoded JWT:", decoded);
         const extractedUserId = decoded.user_id;
 
         if (
@@ -40,8 +41,6 @@ const PostAdvertisementForm = () => {
       } catch (err) {
         console.error("JWT decode error:", err);
       }
-    } else {
-      console.error("No accessToken cookie found");
     }
   }, []);
 
@@ -61,12 +60,11 @@ const PostAdvertisementForm = () => {
     const data = new FormData();
 
     for (const key in formData) {
-      if (key === "photo" && !formData[key]) continue; // skip empty photo
+      if (key === "photo" && !formData[key]) continue;
       data.append(key, formData[key]);
     }
 
     if (!userId) {
-      console.error("No user ID available");
       setStatus("❌ Could not identify user.");
       setLoading(false);
       return;
@@ -75,22 +73,18 @@ const PostAdvertisementForm = () => {
     data.append("farmer_id", userId);
 
     try {
-      const response = await fetch(
-        "http://localhost:8000/blockchain/post_offer",
-        {
-          method: "POST",
-          body: data,
-        }
-      );
+      const response = await fetch("http://localhost:8000/blockchain/post_offer", {
+        method: "POST",
+        body: data,
+      });
 
       if (!response.ok) {
         const errText = await response.text();
-        console.error("Backend error:", errText);
-        throw new Error("Server error");
+        throw new Error(errText || "Server error");
       }
 
       await response.json();
-      setStatus("✅ Advertisement posted successfully!");
+      setStatus("✅ " + t("Advertisement posted successfully"));
       setFormData({
         product: "",
         quantity: "",
@@ -102,7 +96,7 @@ const PostAdvertisementForm = () => {
       });
     } catch (error) {
       console.error("Failed to post offer:", error);
-      setStatus("❌ Something went wrong.");
+      setStatus("❌ " + t("Something went wrong"));
     } finally {
       setLoading(false);
     }
@@ -122,7 +116,7 @@ const PostAdvertisementForm = () => {
       >
         <div className="max-w-lg w-full bg-white/80 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-green-200">
           <h2 className="text-3xl md:text-4xl font-extrabold text-center text-transparent bg-clip-text bg-gradient-to-r from-green-700 via-lime-500 to-emerald-700 mb-2 drop-shadow-lg">
-            🌾 Post Your Crop Offer
+            🌾 {t("Post Your Crop Offer")}
           </h2>
           <p className="text-sm text-gray-700 text-center mb-6">
             👤 <strong>{userName}</strong>
@@ -136,7 +130,7 @@ const PostAdvertisementForm = () => {
             <input
               type="text"
               name="product"
-              placeholder="Product Name"
+              placeholder={t("Product Name")}
               value={formData.product}
               onChange={handleInputChange}
               required
@@ -145,7 +139,7 @@ const PostAdvertisementForm = () => {
             <input
               type="number"
               name="quantity"
-              placeholder="Quantity (kg)"
+              placeholder={t("Quantity (kg)")}
               value={formData.quantity}
               onChange={handleInputChange}
               required
@@ -154,7 +148,7 @@ const PostAdvertisementForm = () => {
             <input
               type="number"
               name="price"
-              placeholder="Price per kg (Rs)"
+              placeholder={t("Price per kg (Rs)")}
               value={formData.price}
               onChange={handleInputChange}
               required
@@ -165,7 +159,7 @@ const PostAdvertisementForm = () => {
                 htmlFor="deadline"
                 className="block text-sm font-medium text-green-800 mb-1"
               >
-                Deadline
+                {t("Deadline")}
               </label>
               <input
                 required
@@ -180,7 +174,7 @@ const PostAdvertisementForm = () => {
             <input
               type="text"
               name="location"
-              placeholder="Location"
+              placeholder={t("Location")}
               value={formData.location}
               onChange={handleInputChange}
               required
@@ -192,15 +186,15 @@ const PostAdvertisementForm = () => {
               onChange={handleInputChange}
               className="w-full p-3 border border-green-200 rounded-lg focus:ring-2 focus:ring-green-400 outline-none transition"
             >
-              <option value="pickup">Pickup</option>
-              <option value="drop-off">Drop-off</option>
+              <option value="pickup">{t("pickup")}</option>
+              <option value="drop-off">{t("drop-off")}</option>
             </select>
             <div>
               <label
                 htmlFor="photo"
                 className="block text-sm font-medium text-green-800 mb-1"
               >
-                Upload Product Image
+                {t("Upload Product Image")}
               </label>
               <input
                 id="photo"
@@ -221,7 +215,7 @@ const PostAdvertisementForm = () => {
                   : "bg-green-600 hover:bg-green-700 shadow-lg"
               }`}
             >
-              {loading ? "Posting..." : "Post Offer"}
+              {loading ? t("Posting...") : t("Post Offer")}
             </button>
 
             {status && (
