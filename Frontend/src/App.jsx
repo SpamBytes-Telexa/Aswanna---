@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import SignUp from './Components/SignUp/sign_up';
 import Login from './Components/Login/login';
 import { AuthProvider } from './Components/context/AuthContext';
-
+import "./i18n";
 const App = () => {
   const CropRecommendationFormWithNav = () => {
     const navigate = useNavigate();
