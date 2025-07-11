@@ -10,7 +10,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import PlantDisease from './Raleesa/plant_disease_recogntion';
 import Home from "./madhuni/pages/Home";
 
-import Weather from "./madhuni/pages/Weather"
+//import Weather from "./madhuni/pages/Weather"
 
 
 
@@ -44,7 +44,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home/>}/>
             <Route path="/chatbot" element={<Chatbot/>}/>
-            <Route path="/weatherforecast" element={<Weather/>}/>
+            
             <Route path="/signup" element={<SignUp />} />
             <Route path="/login" element={<Login />} />
             <Route path="/farmerform" element={<FarmerForm />} />
@@ -70,3 +70,4 @@ const App = () => {
 };
 
 export default App;
+//<Route path="/weatherforecast" element={<Weather/>}/>
