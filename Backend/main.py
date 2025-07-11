@@ -4,7 +4,7 @@ from fastapi import FastAPI, Depends
 #from database import engine, get_db
 #from models import Base, CropOffer
 from fastapi.middleware.cors import CORSMiddleware
-#from routers import predict
+from routers import predict
 
 
 
@@ -49,13 +49,9 @@ def read_root():
 #app.include_router(location.router, prefix='/location', tags=['Weather'])
 #app.include_router(weather16.router, prefix='/weatherfor16days', tags=['Weather'])
 
-
-
-
-
-
 app.include_router(contracts.router, prefix="/blockchain", tags=["contracts"])
 app.include_router(login.router, prefix="/auth", tags=["login"])
-#app.include_router(predict.router, prefix="/ml", tags=["predict"])
-
+app.include_router(predict.router, prefix="/ml", tags=["predict"])
+#app.include_router(predict.router)
+#app.include_router(predict.router, prefix="/ml")
 

@@ -60,7 +60,7 @@ const App = () => {
               element={<RecommendationResults />}
             />
 
-            <Route path="plantDisease" element={<PlantDisease/>}/>
+            <Route path="/plantDisease" element={<PlantDisease/>}/>
           </Routes>
         </AuthProvider>
 
