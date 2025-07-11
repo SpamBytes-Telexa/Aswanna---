@@ -23,6 +23,17 @@ function Navbar() {
             onClick={() => navigate('/')} // optional: make Home icon work too
           />
 
+          <button
+            className="bg-white hover:bg-gray-200 text-black font-medium px-3 py-1 rounded text-xs"
+            onClick={() => navigate('/login')} // ✅ Corrected
+          >
+            Login
+          </button>
+
+          <button className="bg-white hover:bg-gray-200 text-black font-medium px-3 py-1 rounded text-xs"
+            onClick={() => navigate('/signup')}> 
+            Register
+          </button>
 
           <button className="bg-gray-900 hover:bg-gray-700 px-3 py-1 rounded text-xs">
             Logout
