@@ -1,9 +1,15 @@
-import { useNavigate } from 'react-router-dom';
-import DensityMediumIcon from '@mui/icons-material/DensityMedium';
-import HomeIcon from '@mui/icons-material/Home';
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import DensityMediumIcon from "@mui/icons-material/DensityMedium";
+import HomeIcon from "@mui/icons-material/Home";
 
 function Navbar() {
   const navigate = useNavigate();
+  const { i18n, t } = useTranslation();
+
+  const handleLanguageChange = (e) => {
+    i18n.changeLanguage(e.target.value);
+  };
 
   return (
     <nav className="bg-gradient-to-r from-green-800 to-emerald-700 text-white shadow-lg sticky top-0 z-50">
@@ -18,7 +24,7 @@ function Navbar() {
         {/* Navigation Buttons */}
         <div className="flex items-center space-x-4">
           <button
-            onClick={() => navigate('/')}
+            onClick={() => navigate("/")}
             className="hover:text-yellow-300 transition-colors duration-200"
             title="Home"
           >
@@ -26,18 +32,29 @@ function Navbar() {
           </button>
 
           <button
-            onClick={() => navigate('/farmerform')}
+            onClick={() => navigate("/farmerform")}
             className="px-4 py-1.5 bg-white text-green-800 font-semibold text-sm rounded-lg shadow hover:bg-gray-100 transition duration-150"
           >
-            ➕ Add Offer
+            {i18n.language === "si" ? t("add_offer") : "➕ Add Offer"}
           </button>
 
           <button
-            onClick={() => navigate('/contracts')}
+            onClick={() => navigate("/contracts")}
             className="px-4 py-1.5 bg-white text-green-800 font-semibold text-sm rounded-lg shadow hover:bg-gray-100 transition duration-150"
           >
-             My Contracts
+            {i18n.language === "si" ? t("My Crop Contracts") : "My Crop Contracts"}
           </button>
+
+          {/* Language Switcher */}
+          <select
+            value={i18n.language}
+            onChange={handleLanguageChange}
+            className="text-green-800 bg-white px-2 py-1 rounded-lg shadow focus:outline-none"
+            title="Change Language"
+          >
+            <option value="en">English</option>
+            <option value="si">සිංහල</option>
+          </select>
 
           <button
             className="hover:text-yellow-300 transition-colors duration-200"
