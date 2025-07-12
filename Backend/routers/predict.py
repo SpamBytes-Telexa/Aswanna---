@@ -15,6 +15,9 @@ dest_path = "MLModels/model.h5"
 if not os.path.exists(dest_path):
     print("Downloading model...")
     r = requests.get(url)
+
+    os.makedirs(os.path.dirname(dest_path), exist_ok=True)
+
     with open(dest_path, "wb") as f:
         f.write(r.content)
     print("Download complete!")

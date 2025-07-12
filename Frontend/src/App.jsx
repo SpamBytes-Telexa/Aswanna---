@@ -21,6 +21,8 @@ import SignUp from './Components/SignUp/sign_up';
 import Login from './Components/Login/login';
 import { AuthProvider } from './Components/context/AuthContext';
 import "./i18n";
+import Main from './Pages/mainPage';
+import WeatherApp from './madhuni/pages/Weather';
 const App = () => {
   const CropRecommendationFormWithNav = () => {
     const navigate = useNavigate();
@@ -42,7 +44,8 @@ const App = () => {
           
         <AuthProvider>
           <Routes>
-            <Route path="/" element={<Home/>}/>
+            <Route path='/' element={<Main />} />
+            <Route path="/farmer" element={<Home/>}/>
             <Route path="/chatbot" element={<Chatbot/>}/>
             
             <Route path="/signup" element={<SignUp />} />
@@ -59,6 +62,8 @@ const App = () => {
               path="/recommendation-results"
               element={<RecommendationResults />}
             />
+
+            <Route path="/weatherforecast" element={<WeatherApp/>}/>
 
             <Route path="/plantDisease" element={<PlantDisease/>}/>
           </Routes>
