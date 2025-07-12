@@ -23,9 +23,11 @@ const Login = () => {
 
       if (result.data.message === "Login Success") {
         login(result.data.access_token);
+        localStorage.setItem("token", result.data.access_token);
+        localStorage.setItem("role", JSON.stringify(result.data.role));
 
         if (result.data.role === "farmer" ) {
-          navigate("/contracts");
+          navigate("/farmer");
         } else if (result.data.role === "buyer") {
           navigate("/buyer");
         } else  {

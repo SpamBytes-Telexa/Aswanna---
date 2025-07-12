@@ -1,47 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import ChatbotButton from "../components/chatbotbutton";
-import Navbar from "../components/Navbar";
+import ChatbotButton from "../madhuni/components/chatbotbutton";
+import Navbar from "../madhuni/components/Navbar";
 import { motion } from "framer-motion";
-import paddy from "../../assets/tea4.jpeg";
+import paddy from "../assets/tea4.jpeg";
 
 const features = [
-  {
-    title: "පළිබෝධ හඳුනා ගැනීම",
-    emoji: "📷",
-    description: "ඔබගේ බෝගයේ රෝග සහ පළිබෝධ ඡායාරූපයකින් හඳුනා ගන්න",
-    path: "plantDisease"
-  },
-  {
-    title: "වගා නිර්දේශ",
-    emoji: "🌱",
-    description: "භූමි ප්‍රදේශය, කාලගුණය අනුව සුදුසු බෝග තෝරන්න",
-    path: "crop-recommendation",
-  },
-  {
-    title: "වෙළඳ මිල තොරතුරු",
-    emoji: "💰",
-    description: "වෙළඳපොලේ ඇති බෝග මිල දිස්ත්‍රික්ක අනුව බලන්න",
-    path: "buyer",
-  },
-  {
-    title: "කාලගුණ අනාවැකි",
-    emoji: "🌦",
-    description: "අලුත්ම කාලගුණ තොරතුරු සහ අනතුරු ඇඟවීම්",
-    path: "weatherforecast",
-  },
-  {
-    title: "ගොවියන්ගේ සමාජ ජාලය",
-    emoji: "🧑‍🌾",
-    description: "වෙනත් ගොවින් සමඟ පළපුරුදු හුවමාරු කරන්න",
-    path: "farmercommunity",
-  },
-  {
-    title: "වට්ටම් සහ මිල",
-    emoji: "🏷",
-    description: "පොහොර හා උපකරණ සඳහා වට්ටම් බලන්න",
-    path: "discounts",
-  },
+    {
+        title: "වගා උපදෙස් හා තාක්ෂණ",
+        emoji: "🌾",
+        description: "ආධුනික වගා උපදෙස්, තාක්ෂණ සහ උපකරණ සම්බන්ධ තොරතුරු සහ  බෝග මිල හා වෙළඳපොල තොරතුරු",
+        path: "farmer"
+    },
+    {
+        title: "වෙළඳ මිල තොරතුරු",
+        emoji: "💰",
+        description: "වෙළඳපොලේ ඇති බෝග මිල දිස්ත්‍රික්ක අනුව බලන්න",
+        path: "buyer",
+    },
 ];
 
 
@@ -95,7 +71,16 @@ const letterVariants = {
 };
 
 
-const Home = () => {
+const Main = () => {
+  const [loggedIn, setLoggedIn] = useState(false); 
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        setLoggedIn(true);
+    }
+  },[]);  
+
   return (
     <div
       className="min-h-screen bg-cover bg-center bg-no-repeat"
@@ -106,70 +91,61 @@ const Home = () => {
       }}
     >
       <Navbar></Navbar>
-      <div className="bg-white/80">
-        {/* Hero Section */}
-        <section className="pt-24 pb-24 px-4 text-center">
-          <motion.div
-            initial="hidden"
-            animate="visible"
-            variants={fadeInVariant}
-          >
-            
-
-            <motion.h1 
-            className="mt-2 text-[120px] font-bold text-green-800 mb-4"
-            initial="hidden"
-            animate="visible"
-            whileHover="hover"
-            >
-            {"අස්වැන්න".split("").map((letter, index) => (
-                <motion.span
-                key={index}
-                custom={index}
-                variants={letterVariants}
-                style={{ display: "inline-block" }}
-                whileHover={{ scale: 1.2, color: "#14532d" }}
-                >
-                {letter === " " ? "\u00A0" : letter}
-                </motion.span>
-            ))}
-            </motion.h1>
-
-            
-
-            <motion.h2
-              className="mt-20 text-3xl sm:text-5xl font-semibold text-yellow-600 mb-6"
-              initial="hidden"
-              whileInView="visible"
-              variants={fadeInVariant}
-              viewport={{ once: true }}
-            >
-              අස්වැන්න වෙත පිළිගනිමු!
-            </motion.h2>
-
+      <div className="bg-white/80 min-h-screen">
+        <section className="pt-32 pb-80 px-4 text-center">
             <motion.div
-              className="max-w-3xl mx-auto"
-              initial="hidden"
-              whileInView="visible"
-              variants={fadeInVariant}
-              viewport={{ once: true }}
+                initial="hidden"
+                animate="visible"
+                variants={fadeInVariant}
             >
-              <p className="text-xl text-gray-700 mb-6">
-                ශ්‍රී ලංකාවේ ගොවීන්ගේ සංකෘතිමත් අනාගතය සදහා නවීන තාක්ෂණික විසඳුම්.
-              </p>
-              <p className="text-lg text-gray-600 mb-4">
-                අපගේ වේදිකාව ඔබට ලබා දෙන්නේ පළිබෝධ හඳුනාගැනීම, වගා නිර්දේශ,
-                කාලගුණ තොරතුරු සහ වෙළඳපල මිල දත්ත ඇතුළත් සම්පූර්ණ කෘෂිකර්මාන්ත
-                සහය පද්ධතියක්.
-              </p>
-            </motion.div>
-          </motion.div>
-        </section>
+                <motion.h1 
+                    className="mt-2 text-[120px] font-bold text-green-800 mb-4"
+                    initial="hidden"
+                    animate="visible"
+                    whileHover="hover"
+                >
+                    {"අස්වැන්න".split("").map((letter, index) => (
+                        <motion.span
+                            key={index}
+                            custom={index}
+                            variants={letterVariants}
+                            style={{ display: "inline-block" }}
+                            whileHover={{ scale: 1.2, color: "#14532d" }}
+                        >
+                            {letter === " " ? "\u00A0" : letter}
+                        </motion.span>
+                    ))}
+                </motion.h1>
 
-        {/* Features Section */}
+                <motion.h2
+                    className="mt-20 text-3xl sm:text-5xl font-semibold text-yellow-600 mb-6"
+                    initial="hidden"
+                    whileInView="visible"
+                    variants={fadeInVariant}
+                    viewport={{ once: true }}
+                >
+                    අස්වැන්න වෙත පිළිගනිමු!
+                </motion.h2>
+
+                <motion.div
+                    className="max-w-3xl mx-auto"
+                    initial="hidden"
+                    whileInView="visible"
+                    variants={fadeInVariant}
+                    viewport={{ once: true }}
+                >
+                    <p className="text-xl text-gray-700 mb-6">
+                        වගා උපදෙස්, නවීන තාක්ෂණ, වෙළඳපොල මිල තොරතුරු සහ බෝග මිලදී ගැනීමේ පහසුකම් එක්ම තැනකින්. 
+                    </p>
+                    <p className="text-lg text-gray-600 mb-8">
+                        ඔබේ කෘෂිකර්මාන්තය වඩාත් සාර්ථක කර ගැනීමට අවශ්‍ය සියලුම තොරතුරු සහ සේවා — වගා නිර්දේශ, වෙළඳපොල මිල, බෝග මිලදී ගැනීම සහ තාක්ෂණික උපදෙස් — අස්වැන්න වෙතින් ලබාගන්න.
+                    </p>
+                </motion.div>
+            </motion.div>
+        </section>
         
 
-        <section className="px-4 sm:px-6 lg:px-8 pb-20 mt-0">
+        <section className="py-</p>10 px-4 sm:px-6 lg:px-8 pb-20">
         <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -186,7 +162,7 @@ const Home = () => {
                 scale: 1.05,
                 boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
                 }}
-                className="relative bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 border-l-4 border-green-500 mt-0 p-6 h-48
+                className="relative bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 border-l-4 border-green-500 p-6
                         hover:border-green-600 hover:bg-green-50 group"
             >
                 {/* Animated background element */}
@@ -277,4 +253,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Main;
