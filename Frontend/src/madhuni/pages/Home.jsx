@@ -226,7 +226,7 @@ const Home = () => {
           viewport={{ once: true }}
         >
           <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div>
+            <div className="mx-32">
               <h3 className="text-xl font-bold mb-1">අස්වැන්න</h3>
               <p className="text-green-100 text-sm">
                 ශ්‍රී ලංකාවේ ගොවීන් සඳහා නවීන තාක්ෂණික විසඳුම්.

@@ -91,67 +91,76 @@ const Main = () => {
       }}
     >
       <Navbar></Navbar>
-      <div className="bg-white/80 min-h-screen">
-        <section className="pt-32 pb-80 px-4 text-center">
-            <motion.div
-                initial="hidden"
-                animate="visible"
-                variants={fadeInVariant}
+      <div className="bg-white/80">
+        {/* Hero Section */}
+        <section className="pt-24 pb-24 px-4 text-center">
+          <motion.div
+            initial="hidden"
+            animate="visible"
+            variants={fadeInVariant}
+          >
+            
+
+            <motion.h1 
+            className="mt-2 text-[120px] font-bold text-green-800 mb-4"
+            initial="hidden"
+            animate="visible"
+            whileHover="hover"
             >
-                <motion.h1 
-                    className="mt-2 text-[120px] font-bold text-green-800 mb-4"
-                    initial="hidden"
-                    animate="visible"
-                    whileHover="hover"
+            {"අස්වැන්න".split("").map((letter, index) => (
+                <motion.span
+                key={index}
+                custom={index}
+                variants={letterVariants}
+                style={{ display: "inline-block" }}
+                whileHover={{ scale: 1.2, color: "#14532d" }}
                 >
-                    {"අස්වැන්න".split("").map((letter, index) => (
-                        <motion.span
-                            key={index}
-                            custom={index}
-                            variants={letterVariants}
-                            style={{ display: "inline-block" }}
-                            whileHover={{ scale: 1.2, color: "#14532d" }}
-                        >
-                            {letter === " " ? "\u00A0" : letter}
-                        </motion.span>
-                    ))}
-                </motion.h1>
+                {letter === " " ? "\u00A0" : letter}
+                </motion.span>
+            ))}
+            </motion.h1>
 
-                <motion.h2
-                    className="mt-20 text-3xl sm:text-5xl font-semibold text-yellow-600 mb-6"
-                    initial="hidden"
-                    whileInView="visible"
-                    variants={fadeInVariant}
-                    viewport={{ once: true }}
-                >
-                    අස්වැන්න වෙත පිළිගනිමු!
-                </motion.h2>
+            
 
-                <motion.div
-                    className="max-w-3xl mx-auto"
-                    initial="hidden"
-                    whileInView="visible"
-                    variants={fadeInVariant}
-                    viewport={{ once: true }}
-                >
-                    <p className="text-xl text-gray-700 mb-6">
-                        වගා උපදෙස්, නවීන තාක්ෂණ, වෙළඳපොල මිල තොරතුරු සහ බෝග මිලදී ගැනීමේ පහසුකම් එක්ම තැනකින්. 
-                    </p>
-                    <p className="text-lg text-gray-600 mb-8">
-                        ඔබේ කෘෂිකර්මාන්තය වඩාත් සාර්ථක කර ගැනීමට අවශ්‍ය සියලුම තොරතුරු සහ සේවා — වගා නිර්දේශ, වෙළඳපොල මිල, බෝග මිලදී ගැනීම සහ තාක්ෂණික උපදෙස් — අස්වැන්න වෙතින් ලබාගන්න.
-                    </p>
-                </motion.div>
+            <motion.h2
+              className="mt-20 text-3xl sm:text-5xl font-semibold text-yellow-600 mb-6"
+              initial="hidden"
+              whileInView="visible"
+              variants={fadeInVariant}
+              viewport={{ once: true }}
+            >
+              අස්වැන්න වෙත පිළිගනිමු!
+            </motion.h2>
+
+            <motion.div
+              className="max-w-3xl mx-auto"
+              initial="hidden"
+              whileInView="visible"
+              variants={fadeInVariant}
+              viewport={{ once: true }}
+            >
+              <p className="text-xl text-gray-700 mb-6">
+                ශ්‍රී ලංකාවේ ගොවීන්ගේ සංකෘතිමත් අනාගතය සදහා නවීන තාක්ෂණික විසඳුම්.
+              </p>
+              <p className="text-lg text-gray-600 mb-4">
+                අපගේ වේදිකාව ඔබට ලබා දෙන්නේ පළිබෝධ හඳුනාගැනීම, වගා නිර්දේශ,
+                කාලගුණ තොරතුරු සහ වෙළඳපල මිල දත්ත ඇතුළත් සම්පූර්ණ කෘෂිකර්මාන්ත
+                සහය පද්ධතියක්.
+              </p>
             </motion.div>
+          </motion.div>
         </section>
+
+        {/* Features Section */}
         
 
-        <section className="py-</p>10 px-4 sm:px-6 lg:px-8 pb-20">
+        <section className="px-4 sm:px-6 lg:px-8 pb-20 mt-0">
         <motion.div
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
+            className="grid grid-cols-2 md:grid-cols-2 gap-8 max-w-4xl mx-auto"
         >
             {features.map((feature, index) => (
             <Link to={`/${feature.path}`} key={index}>
@@ -162,7 +171,7 @@ const Main = () => {
                 scale: 1.05,
                 boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
                 }}
-                className="relative bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 border-l-4 border-green-500 p-6
+                className="relative bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 border-l-4 border-green-500 mt-0 p-6 h-48
                         hover:border-green-600 hover:bg-green-50 group"
             >
                 {/* Animated background element */}
