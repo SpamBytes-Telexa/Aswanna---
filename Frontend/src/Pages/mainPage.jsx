@@ -1,47 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import ChatbotButton from "../components/chatbotbutton";
-import Navbar from "../components/Navbar";
+import ChatbotButton from "../madhuni/components/chatbotbutton";
+import Navbar from "../madhuni/components/Navbar";
 import { motion } from "framer-motion";
-import paddy from "../../assets/tea4.jpeg";
+import paddy from "../assets/tea4.jpeg";
 
 const features = [
-  {
-    title: "පළිබෝධ හඳුනා ගැනීම",
-    emoji: "📷",
-    description: "ඔබගේ බෝගයේ රෝග සහ පළිබෝධ ඡායාරූපයකින් හඳුනා ගන්න",
-    path: "plantDisease"
-  },
-  {
-    title: "වගා නිර්දේශ",
-    emoji: "🌱",
-    description: "භූමි ප්‍රදේශය, කාලගුණය අනුව සුදුසු බෝග තෝරන්න",
-    path: "crop-recommendation",
-  },
-  {
-    title: "වෙළඳ මිල තොරතුරු",
-    emoji: "💰",
-    description: "වෙළඳපොලේ ඇති බෝග මිල දිස්ත්‍රික්ක අනුව බලන්න",
-    path: "buyer",
-  },
-  {
-    title: "කාලගුණ අනාවැකි",
-    emoji: "🌦",
-    description: "අලුත්ම කාලගුණ තොරතුරු සහ අනතුරු ඇඟවීම්",
-    path: "weatherforecast",
-  },
-  {
-    title: "ගොවියන්ගේ සමාජ ජාලය",
-    emoji: "🧑‍🌾",
-    description: "වෙනත් ගොවින් සමඟ පළපුරුදු හුවමාරු කරන්න",
-    path: "farmercommunity",
-  },
-  {
-    title: "වට්ටම් සහ මිල",
-    emoji: "🏷",
-    description: "පොහොර හා උපකරණ සඳහා වට්ටම් බලන්න",
-    path: "discounts",
-  },
+    {
+        title: "වගා උපදෙස් හා තාක්ෂණ",
+        emoji: "🌾",
+        description: "ආධුනික වගා උපදෙස්, තාක්ෂණ සහ උපකරණ සම්බන්ධ තොරතුරු සහ  බෝග මිල හා වෙළඳපොල තොරතුරු",
+        path: "farmer"
+    },
+    {
+        title: "වෙළඳ මිල තොරතුරු",
+        emoji: "💰",
+        description: "වෙළඳපොලේ ඇති බෝග මිල දිස්ත්‍රික්ක අනුව බලන්න",
+        path: "buyer",
+    },
 ];
 
 
@@ -95,7 +71,16 @@ const letterVariants = {
 };
 
 
-const Home = () => {
+const Main = () => {
+  const [loggedIn, setLoggedIn] = useState(false); 
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+        setLoggedIn(true);
+    }
+  },[]);  
+
   return (
     <div
       className="min-h-screen bg-cover bg-center bg-no-repeat"
@@ -175,7 +160,7 @@ const Home = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
-            className="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
+            className="grid grid-cols-2 md:grid-cols-2 gap-8 max-w-4xl mx-auto"
         >
             {features.map((feature, index) => (
             <Link to={`/${feature.path}`} key={index}>
@@ -226,7 +211,7 @@ const Home = () => {
           viewport={{ once: true }}
         >
           <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div className="mx-32">
+            <div>
               <h3 className="text-xl font-bold mb-1">අස්වැන්න</h3>
               <p className="text-green-100 text-sm">
                 ශ්‍රී ලංකාවේ ගොවීන් සඳහා නවීන තාක්ෂණික විසඳුම්.
@@ -277,4 +262,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Main;

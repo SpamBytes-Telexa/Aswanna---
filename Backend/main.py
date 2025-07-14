@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, WebSocket, WebSocketDisconnect
 #from sqlalchemy.orm import Session
 #from uuid import UUID
 #from database import engine, get_db
@@ -26,7 +26,8 @@ app = FastAPI()
 
 
 origins = [
-    "http://localhost:5173",  # React dev server origin
+    "http://localhost:5173", 
+     'http://localhost:5174' # React dev server origin
     # You can add other origins you want to allow here
 ]
 app.add_middleware(
@@ -43,6 +44,32 @@ def read_root():
     return {"message": "Backend running ✅"}
 
 
+class ConnectionManager:
+    def __init__(self):
+        self.activate_connections: list[WebSocket] = []
+
+    async def connect(self, websocket: WebSocket):
+        await websocket.accept()
+        self.activate_connections.append(websocket)
+    
+    def disconnect(self, websocket: WebSocket):
+        self.activate_connections.remove(websocket)
+
+    async def broadcast(self, message: str):
+        for connection in self.activate_connections:
+            await connection.send_text(message)
+
+manager = ConnectionManager()
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await manager.connect(websocket)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            await manager.broadcast(data)
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
 
 #app.include_router(chat.router, prefix='/chatbot', tags=['Chatbot'])
 #app.include_router(weather.router, prefix='/weather', tags=['Weather'])
