@@ -188,3 +188,50 @@ async def register_offer(
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=400, detail=f"Failed to post offer: {str(e)}")
+
+@router.get("/my-purchases/{user_id}")
+def get_my_contracts(user_id: str, db: Session = Depends(get_db)):
+    contracts = []
+
+    # Fetch all contracts for this buyer
+    offers = db.query(Contract).filter(Contract.buyer_id == user_id).all()
+
+    for contract in offers:
+        # Fetch the related crop offer
+        offer = db.query(CropOffer).filter(CropOffer.id == contract.offer_id).first()
+        if not offer:
+            continue  # Skip if no related offer found
+
+        contracts.append({
+            "id": str(contract.id),
+            "offer_id": str(offer.id),
+            "product": offer.product,
+            "price": offer.price,
+            "quantity": offer.quantity,
+            "delivery_method": offer.delivery_method,
+            "status": contract.status,
+            "location": offer.location,
+            "deadline": offer.deadline.isoformat() if offer.deadline else None,
+            "delivery_marked": contract.delivery_marked,
+            "confirmed": contract.confirmed,
+            "contract_address": contract.contract_address,
+            "tx_hash": contract.tx_hash,
+            "farmer_name": offer.farmer_name if hasattr(offer, "farmer_name") else "Unknown",
+            "total_price": offer.price * offer.quantity,
+        })
+
+    return contracts
+
+
+@router.put("/confirm_contracts/{contract_id}/status")
+def update_contract_status(contract_id: UUID, new_status: str, db: Session = Depends(get_db)):
+    contract = db.query(Contract).filter(Contract.id == contract_id).first()
+    if not contract:
+        raise HTTPException(status_code=404, detail="Contract not found")
+
+    if new_status not in ["completed", "disputed"]:
+        raise HTTPException(status_code=400, detail="Invalid status")
+
+    contract.status = new_status
+    db.commit()
+    return {"message": f"Contract status updated to {new_status}"}
