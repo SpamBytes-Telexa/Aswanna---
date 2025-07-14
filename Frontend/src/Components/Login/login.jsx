@@ -25,6 +25,7 @@ const Login = () => {
         login(result.data.access_token);
         localStorage.setItem("token", result.data.access_token);
         localStorage.setItem("role", JSON.stringify(result.data.role));
+        localStorage.setItem("username", JSON.stringify(result.data.username));
 
         if (result.data.role === "farmer" ) {
           navigate("/farmer");
