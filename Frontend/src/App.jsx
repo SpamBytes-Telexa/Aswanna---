@@ -23,6 +23,8 @@ import { AuthProvider } from './Components/context/AuthContext';
 import "./i18n";
 import Main from './Pages/mainPage';
 import WeatherApp from './madhuni/pages/Weather';
+import FarmerCommunity from './Pages/farmerCommunity';
+import Chat from './Components/FarmerCommunity/chat';
 const App = () => {
   const CropRecommendationFormWithNav = () => {
     const navigate = useNavigate();
@@ -66,6 +68,9 @@ const App = () => {
             <Route path="/weatherforecast" element={<WeatherApp/>}/>
 
             <Route path="/plantDisease" element={<PlantDisease/>}/>
+
+            <Route path='/farmercommunity' element={<FarmerCommunity/>} />
+            <Route path='/farmercommunity/chat' element={<Chat/>} />
           </Routes>
         </AuthProvider>
 

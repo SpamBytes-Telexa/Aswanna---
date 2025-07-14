@@ -3,6 +3,7 @@ import DensityMediumIcon from '@mui/icons-material/DensityMedium';
 import HomeIcon from '@mui/icons-material/Home';
 import { useState, useEffect } from 'react';
 import contracts from '../../assets/farmer_contract.png'; // Example image import
+import community from '../../assets/community.png'; // Example image import
 
 function Navbar() {
   const navigate = useNavigate(); // ✅ use the hook
@@ -35,12 +36,21 @@ function Navbar() {
             onClick={() => navigate('/')} // optional: make Home icon work too
           />
           {isFarmer && (
-            <img
-              src={contracts}
-              alt="Contracts"
-              className="cursor-pointer w-8 h-8 m-2"
-              onClick={() => navigate('/contracts')}
-            />
+            <>
+              <img
+                src={contracts}
+                alt="Contracts"
+                className="cursor-pointer w-8 h-8 m-2"
+                onClick={() => navigate('/contracts')}
+              />
+              <img
+                src={community}
+                alt="Contracts"
+                className="cursor-pointer w-8 h-8 m-2"
+                onClick={() => navigate('/farmercommunity')}
+              />
+            </>
+            
           )}
           {console.log(isFarmer)}
           {loggedIn ? (
