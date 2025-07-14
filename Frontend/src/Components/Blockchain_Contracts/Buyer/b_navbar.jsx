@@ -37,6 +37,13 @@ function Navbar() {
           >
             {i18n.language === "si" ? t("Marketplace") : "Marketplace"}
           </button>
+          
+          <button
+            onClick={() => navigate("/my_purchases")}
+            className="px-4 py-1.5 bg-white text-green-800 font-semibold text-sm rounded-lg shadow hover:bg-gray-100 transition duration-150"
+          >
+            {i18n.language === "si" ? t("My Purchases") : "My Purchases"}
+          </button>
 
           {/* Language Switcher */}
           <select

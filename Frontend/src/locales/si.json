@@ -98,5 +98,10 @@
   "Contract deployed & payment successful!\nTx:": "ගිවිසුම යොදන ලදී සහ ගෙවීම සාර්ථකයි!\nTx:",
   "Contract deployed but DB failed:": "ගිවිසුම යොදන ලදී නමුත් දත්ත ගබඩාව අසාර්ථකයි:",
   "Deployment or payment failed:": "යෙදීම හෝ ගෙවීම අසාර්ථක විය:",
-  "Loading offer details...": "යෝජනාවේ විස්තර පූරණය වෙමින්..."
+  "Loading offer details...": "යෝජනාවේ විස්තර පූරණය වෙමින්...",
+  "Confirm Delivery": "බෙදාහැරීම තහවුරු කරන්න",
+  "Raise Dispute": "විරෝධතාවයක් නංවන්න",
+  "cancelled": "අවලංගු කරන ලදි",
+  "in_delivery": "බෙදා හැරෙමින් පවතී",
+  "My Purchases": "මගේ මිලදීගැනීම්"
 }
