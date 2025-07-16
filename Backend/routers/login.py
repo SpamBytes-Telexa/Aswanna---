@@ -31,9 +31,11 @@ def register_user(user: UserBase, db: Session = Depends(get_db)):
         # Insert farmer details
         query_farmer = text("""
         CREATE TABLE IF NOT EXISTS farmer_details (
+            username VARCHAR(255) PRIMARY KEY,
             name VARCHAR(255),
             village VARCHAR(255),
             crops VARCHAR(255),
+            connectedFarmers TEXT[],
             about TEXT,
             image BYTEA
         )
@@ -50,6 +52,21 @@ def register_user(user: UserBase, db: Session = Depends(get_db)):
 @router.post("/login")
 def login_user(user: UserLogin, response: Response, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.email == user.email).first()
+
+    query_farmer = text("""
+        CREATE TABLE IF NOT EXISTS farmer_details (
+            username VARCHAR(255) PRIMARY KEY,
+            name VARCHAR(255),
+            village VARCHAR(255),
+            crops VARCHAR(255),
+            connectedFarmers TEXT[],
+            about TEXT,
+            image BYTEA
+        );
+        
+        """)
+    db.execute(query_farmer)
+    db.commit()
 
     if not db_user or not verify_password(user.password , db_user.password_hash):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
@@ -68,34 +85,3 @@ def login_user(user: UserLogin, response: Response, db: Session = Depends(get_db
         "role": db_user.role,
         "user_name": db_user.name
     }
-
-
-@router.post("/add_farmer_details")
-def add_farmer_details(
-    name: str = Form(...),
-    village: str = Form(...),
-    crops: str = Form(...),
-    about: str = Form(...),
-    image: UploadFile = File(...),
-    db: Session = Depends(get_db)
-):
-    try:
-        image_data = image.file.read()
-        query = text("""
-            INSERT INTO farmer_details (name, village, crops, about, image)
-            VALUES (:name, :village, :crops, :about, :image)
-        """)
-        db.execute(query, {
-            "name": name,
-            "village": village,
-            "crops": crops,
-            "about": about,
-            "image": image_data
-        })
-        db.commit()
-    except Exception as e:
-        db.rollback()
-        print(f"Error adding farmer details: {str(e)}")
-        raise HTTPException(status_code=400, detail=f"Failed to add farmer details: {str(e)}")
-    
-    return {"message": "Farmer details added successfully"}
