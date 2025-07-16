@@ -4,8 +4,8 @@ import requests
 import os
 import logging
 from typing import Tuple, Optional
-from models.schemas import ModelInputs
-from core.config import settings
+from ..models.schemas import ModelInputs
+from ..core.config import settings
 
 logger = logging.getLogger(__name__)
 

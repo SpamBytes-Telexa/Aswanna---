@@ -1,4 +1,4 @@
-from models.schemas import FormData, ModelInputs
+from ..models.schemas import FormData, ModelInputs
 import logging
 
 logger = logging.getLogger(__name__)

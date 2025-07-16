@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends
-from models.schemas import FormData, CropRecommendation, HealthResponse
-from services.mapping_service import MappingService
-from services.model_service import ModelService
-from services.gemini_service import GeminiService
+from ..models.schemas import FormData, CropRecommendation, HealthResponse
+from ..services.mapping_service import MappingService
+from ..services.model_service import ModelService
+from ..services.gemini_service import GeminiService
 import logging
 
 logger = logging.getLogger(__name__)
@@ -14,7 +14,7 @@ def get_mapping_service():
     return MappingService()
 
 def get_model_service():
-    return ModelService()
+    return ModelService()   
 
 def get_gemini_service():
     return GeminiService()
