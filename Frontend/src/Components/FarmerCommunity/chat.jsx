@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../../madhuni/components/Navbar";
 import { useAuth } from "../context/AuthContext";
-import send from "../../assets/send.png"
+import send from "../../assets/send.png";
 
 const WS_URL = "ws://localhost:8000/ws";
 
@@ -11,7 +11,9 @@ function Chat() {
     const navigate = useNavigate();
     const { user } = useAuth();
     const farmer = location.state?.farmer;
-    
+
+    const normalize = (str) => str.toLowerCase().trim().replace(/\s+/g, '');
+
     const ws = useRef(null);
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState("");
@@ -26,7 +28,6 @@ function Chat() {
         scrollToBottom();
     }, [messages]);
 
-    // Redirect if no farmer data is provided
     useEffect(() => {
         if (!farmer) {
             navigate("/farmercommunity");
@@ -35,156 +36,191 @@ function Chat() {
     }, [farmer, navigate]);
 
     useEffect(() => {
+        if (!farmer && !user) return;
+
+        // Get normalized emails/usernames for consistent API usage
+        const currentUserEmail = normalize(user?.email || localStorage.getItem("username")?.replace(/"/g, '') || '');
+        const farmerUsername = normalize(farmer?.username || '');
+
+        if (!currentUserEmail || !farmerUsername) return;
+
+        fetch(`http://localhost:8000/farmers/chat_messages?username=${currentUserEmail}&farmer_name=${farmerUsername}`)
+            .then(res => res.json())
+            .then(data => {
+                // Ensure messages are formatted like the rest of the app expects
+                if (Array.isArray(data.messages)) {
+                    setMessages(
+                        data.messages.map(msg => ({
+                            ...msg,
+                            timestamp: new Date(msg.timestamp),
+                            isOwn: normalize(msg.sender) === currentUserEmail
+                        }))
+                    );
+                }
+            })
+            .catch(err => console.error(err));
+    }, [farmer, user]);
+
+
+    useEffect(() => {
         if (!farmer) return;
-        
-        ws.current = new WebSocket(WS_URL);
+
+        let currentUserEmail = user?.email || localStorage.getItem("username")?.replace(/"/g, '');
+        currentUserEmail = normalize(currentUserEmail);
+        ws.current = new WebSocket(`${WS_URL}?user=${currentUserEmail}`);
 
         ws.current.onopen = () => {
-            console.log("WebSocket connected");
             setIsConnected(true);
         };
 
         ws.current.onmessage = (event) => {
-            const isOwnMessage = !event.data.startsWith(`${user?.email || "You"}:`)
+            const messageObj = JSON.parse(event.data);
 
-            const messageData = {
-                text: event.data,
-                sender: user?.email || "You",
-                timestamp: new Date(),
-                isOwn: isOwnMessage
-            };
-            setMessages((prev) => [...prev, messageData]);
+            const normalizedCurrentUser = normalize(user?.email || localStorage.getItem("username")?.replace(/"/g, '') || '');
+            const normalizedFarmerUsername = normalize(farmer.username);
+
+            // console.log(normalizedCurrentUser, normalizedFarmerUsername, messageObj);
+
+            const messageSender = normalize(messageObj.sender);
+            const messageReceiver = normalize(messageObj.receiver);
+
+            const isOwnMessage = messageSender === normalizedCurrentUser;
+
+            // Message belongs to this chat if:
+            // 1. I sent it to the farmer OR
+            // 2. Farmer sent it to me
+            const isMessageForThisChat =
+                (messageSender === normalizedCurrentUser && messageReceiver === normalizedFarmerUsername) ||
+                (messageSender === normalizedFarmerUsername && messageReceiver === normalizedCurrentUser);
+
+            if (isMessageForThisChat) {
+                setMessages(prev => [...prev, {
+                    text: messageObj.text,
+                    sender: messageObj.sender,
+                    receiver: messageObj.receiver,
+                    timestamp: new Date(messageObj.timestamp),
+                    isOwn: isOwnMessage
+                }]);
+            }
         };
 
-        ws.current.onclose = () => {
-            console.log("WebSocket disconnected");
-            setIsConnected(false);
-        };
 
-        ws.current.onerror = (error) => {
-            console.error("WebSocket error:", error);
-            setIsConnected(false);
-        };
+        ws.current.onclose = () => setIsConnected(false);
+        ws.current.onerror = () => setIsConnected(false);
 
-        return () => {
-            ws.current.close();
-        };
-    }, [farmer]);
+        return () => ws.current?.close();
+    }, [farmer, user]);
 
     const sendMessage = (e) => {
         e.preventDefault();
-        if (input.trim() && ws.current.readyState === WebSocket.OPEN) {
+        if (input.trim() && ws.current?.readyState === WebSocket.OPEN) {
+            const currentUserEmail = user?.email || localStorage.getItem("username")?.replace(/"/g, '');
             const messageData = {
+                sender: normalize(currentUserEmail),
+                receiver: normalize(farmer.username),
                 text: input.trim(),
-                sender: user?.email || "You",
-                timestamp: new Date(),
-                isOwn: true
+                timestamp: new Date().toISOString()
             };
-            // setMessages((prev) => [...prev, messageData]);
-            
-            // Send to WebSocket
-            ws.current.send(input.trim());
+            ws.current.send(JSON.stringify(messageData));
             setInput("");
         }
     };
 
     if (!farmer) {
-        return (
-            <div className="min-h-screen bg-gradient-to-r from-green-50 to-green-100 flex items-center justify-center">
-                <div className="text-center">
-                    <div className="text-lg text-gray-600">Loading chat...</div>
-                </div>
-            </div>
-        );
+        return <div>Loading...</div>;
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-r from-green-50 to-green-100">
+        <div className="min-h-screen bg-gradient-to-br from-green-50 to-green-200">
             <Navbar />
-            <div className="p-6 flex flex-col h-screen">
-                {/* Chat Header */}
-                <div className="bg-white shadow-md rounded-lg p-4 mb-4 flex items-center justify-between">
-                    <div className="flex items-center space-x-4">
-                        <button 
-                            onClick={() => navigate("/farmercommunity")}
-                            className="text-green-50 hover:text-green-800 transition-colors font-medium"
+            <div className="flex flex-col items-center py-8 h-screen">
+                <div className="w-full max-w-2xl flex flex-col flex-1 h-[80vh] bg-white rounded-2xl shadow-lg border border-green-200">
+                    
+                    {/* Chat Header */}
+                    <div className="flex items-center px-6 py-4 border-b border-green-100 bg-green-50 rounded-t-2xl">
+                        <button
+                            className="flex items-center font-black text-green-700 hover:text-green-900 focus:outline-none mr-3"
+                            onClick={() => navigate(-1)}
+                            aria-label="Back"
+                            style={{
+                                fontSize: "1.5rem",
+                                background: "#d1fae5",
+                                borderRadius: "50%",
+                                width: "2.5rem",
+                                height: "2.5rem",
+                                justifyContent: "center",
+                                alignItems: "center",
+                                display: "flex",
+                                boxShadow: "0 1px 4px rgba(16, 185, 129, 0.15)"
+                            }}
                         >
-                            ← Back to Community
-                        </button>
-                        <div>
-                            <h1 className="text-2xl font-bold text-green-800">{farmer.name}</h1>
-                            <p className="text-sm text-gray-600">{farmer.location}</p>
-                            <p className="text-xs text-gray-500">Crops: {farmer.crops?.join(", ")}</p>
-                        </div>
-                    </div>
-                    <div className="text-right">
-                        <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                            <span className="text-green-600 font-bold text-lg">
-                                {farmer.name?.charAt(0).toUpperCase()}
+                            <span className="material-icons" style={{ fontSize: "2rem" }}>
+                                &#8592;
                             </span>
+                        </button>
+                        <div className="w-12 h-12 rounded-full bg-green-200 flex items-center justify-center text-xl font-bold text-green-700 mr-4">
+                            {farmer.name?.[0]?.toUpperCase() || "F"}
                         </div>
-                        <div className="text-xs mt-1">
-                            <span className={`inline-block w-2 h-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`}></span>
-                            <span className="ml-1 text-gray-500">{isConnected ? 'Online' : 'Offline'}</span>
+                        <div>
+                            <div className="font-semibold text-lg text-green-800">{farmer.name}</div>
+                            <div className={`text-xs ${isConnected ? "text-green-500" : "text-gray-400"}`}>
+                                {isConnected ? "Online" : "Offline"}
+                            </div>
                         </div>
                     </div>
-                </div>
-
-                {/* Messages Container */}
-                <div className="flex-1 bg-white border rounded-lg p-4 overflow-y-auto mb-4 min-h-96">
-                    {messages.length === 0 ? (
-                        <div className="text-center text-gray-500 mt-8">
-                            <p>Start a conversation with {farmer.name}</p>
-                            <p className="text-sm mt-2">Say hello and share your farming experiences!</p>
-                        </div>
-                    ) : (
-                        <>
-                            {messages.map((msg, index) => (
-                                <div key={index} className={`mb-3 flex ${msg.isOwn ? 'justify-end' : 'justify-start'}`}>
-                                    <div className={`flex items-start space-x-2 max-w-xs ${msg.isOwn ? 'flex-row-reverse space-x-reverse' : ''}`}>
-                                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
-                                            <span className="text-green-600 font-bold text-sm">
-                                                {msg.isOwn ? 
-                                                    (user?.email?.charAt(0).toUpperCase() || 'Y') : 
-                                                    farmer.name?.charAt(0).toUpperCase()
-                                                }
-                                            </span>
-                                        </div>
-                                        <div className={`p-3 rounded-lg ${msg.isOwn ? 'bg-green-600 text-white' : 'bg-green-50 text-gray-700'}`}>
-                                            <p className={`text-sm font-medium ${msg.isOwn ? 'text-green-100' : 'text-green-800'}`}>
-                                                {msg.sender}
-                                            </p>
-                                            <p>{msg.text}</p>
-                                            <p className={`text-xs mt-1 ${msg.isOwn ? 'text-green-200' : 'text-gray-500'}`}>
-                                                {msg.timestamp.toLocaleTimeString()}
-                                            </p>
-                                        </div>
+                    {/* Chat Messages */}
+                    <div className="flex-1 overflow-y-auto px-6 py-4 bg-green-50">
+                        {messages.length === 0 && (
+                            <div className="text-center text-gray-400 mt-10">No messages yet. Say hello!</div>
+                        )}
+                        {messages.map((msg, index) => (
+                            <div key={index} className={`mb-4 flex ${msg.isOwn ? 'justify-end' : 'justify-start'}`}>
+                                <div className={`max-w-xs md:max-w-md p-3 rounded-2xl shadow-sm
+                                    ${msg.isOwn
+                                        ? 'bg-green-600 text-white rounded-br-none'
+                                        : 'bg-white border border-green-200 text-gray-800 rounded-bl-none'
+                                    }`}>
+                                    <div className="text-sm break-words">{msg.text}</div>
+                                    <div className="text-[10px] text-right mt-1 opacity-70">
+                                        {msg.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                                     </div>
                                 </div>
-                            ))}
-                            <div ref={messagesEndRef} />
-                        </>
-                    )}
-                </div>
-
-                {/* Message Input */}
-                <div className="flex items-end space-x-2">
-                    <textarea
-                        value={input}
-                        onChange={(e) => setInput(e.target.value)}
-                        className="flex-1 border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 resize-none"
-                        placeholder={`Type your message to ${farmer.name}...`}
-                        rows={2}
-                    />
-                    <img
-                        src={send}
-                        alt="Send"
-                        className={`w-10 h-10 cursor-pointer ${!input.trim() ? 'opacity-50 pointer-events-none' : ''}`}
-                        onClick={(e) => {
-                            if (input.trim()) sendMessage(e);
-                        }}
-                        style={{ objectFit: "contain" }}
-                    />
+                            </div>
+                        ))}
+                        <div ref={messagesEndRef} />
+                    </div>
+                    {/* Chat Input */}
+                    <form
+                        className="flex items-end px-6 py-4 bg-white border-t border-green-100 rounded-b-2xl"
+                        onSubmit={sendMessage}
+                    >
+                        <textarea
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            className="flex-1 border border-green-200 rounded-xl px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-400 resize-none bg-green-50 text-gray-800"
+                            placeholder={`Type your message to ${farmer.name}...`}
+                            rows={1}
+                            onKeyDown={e => {
+                                if (e.key === "Enter" && !e.shiftKey) {
+                                    e.preventDefault();
+                                    if (input.trim()) sendMessage(e);
+                                }
+                            }}
+                        />
+                        <button
+                            type="submit"
+                            disabled={!input.trim()}
+                            className={`ml-2 p-2 rounded-full transition-all duration-150
+                                ${input.trim() ? "bg-green-500 hover:bg-green-600" : "bg-green-200 cursor-not-allowed"}
+                            `}
+                        >
+                            <img
+                                src={send}
+                                alt="Send"
+                                className="w-7 h-7"
+                            />
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
