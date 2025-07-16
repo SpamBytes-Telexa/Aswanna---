@@ -7,9 +7,8 @@ class FormData(BaseModel):
     soilPH: str
     climate: str
     season: str
-    farmSize: str
     experience: str
-    goals: List[str]
+   
 
 class ModelInputs(BaseModel):
     N: float

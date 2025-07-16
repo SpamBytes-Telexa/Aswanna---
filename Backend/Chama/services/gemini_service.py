@@ -1,8 +1,8 @@
 import google.generativeai as genai
 import logging
 from typing import Dict, Optional
-from models.schemas import FormData, ModelInputs, GeminiResponse
-from core.config import settings
+from ..models.schemas import FormData, ModelInputs, GeminiResponse
+from ..core.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -23,11 +23,11 @@ class GeminiService:
             logger.warning("Gemini API key not configured")
     
     def is_configured(self) -> bool:
-        """Check if Gemini is configured"""
+        
         return self.model is not None
     
     async def get_crop_advice(self, crop: str, form_data: FormData, model_inputs: ModelInputs) -> GeminiResponse:
-        """Get detailed farming advice from Gemini AI in Sinhala"""
+        
         
         if not self.is_configured():
             return self._get_fallback_advice(crop, form_data)
@@ -49,7 +49,7 @@ class GeminiService:
         """Create comprehensive prompt for Gemini AI"""
         
         return f"""
-        ගොවියෙකුට {crop} වගා කිරීම සඳහා සිංහල භාෂාවෙන් සම්පූර්ණ උපදෙස් ලබා දෙන්න.
+        ගොවියෙකුට {crop} වගා කිරීම සඳහා සිංහල භාෂාවෙන් සම්පූර්ණ මාතෘකාව පිළිබඳ විස්තරාත්මකව උපදෙස් ලබා දෙන්න.
         
         ගොවි බිම් තොරතුරු:
         - ස්ථානය: {form_data.location}

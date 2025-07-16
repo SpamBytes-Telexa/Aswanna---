@@ -37,7 +37,7 @@ class ModelService:
         await self.load_model()
     
     async def load_model(self):
-        """Load the ML model from GitHub release or local file"""
+        
         try:
             # Try to load from local file first
             if os.path.exists(settings.MODEL_PATH):
@@ -62,15 +62,15 @@ class ModelService:
             self.crop_model = None
     
     def is_model_loaded(self) -> bool:
-        """Check if model is loaded"""
+        
         return self.crop_model is not None
     
     def is_gemini_configured(self) -> bool:
-        """Check if Gemini is configured"""
+        
         return settings.GEMINI_API_KEY is not None and settings.GEMINI_API_KEY != ""
     
     def predict_crop(self, model_inputs: ModelInputs) -> Tuple[str, float]:
-        """Predict crop using the ML model or fallback"""
+        
         if self.crop_model is None:
             return self._predict_crop_fallback(model_inputs)
         

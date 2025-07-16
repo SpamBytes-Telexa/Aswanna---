@@ -19,30 +19,25 @@ class MappingService:
         
         # Climate to temperature mapping (average temperatures in Celsius)
         self.climate_temp_mapping = {
-            "tropical": 28,
-            "subtropical": 24,
-            "temperate": 18,
-            "continental": 15,
-            "arid": 32,
-            "mediterranean": 22
+            "hot": (28),
+            "temperate": (18),
+            "cold": (3),
+
         }
         
         # Climate to humidity mapping (percentage)
         self.climate_humidity_mapping = {
-            "tropical": 80,
-            "subtropical": 70,
+            "hot": 80,
             "temperate": 60,
-            "continental": 55,
-            "arid": 30,
-            "mediterranean": 65
+            "cold": 30,
+            
         }
         
         # Season to rainfall mapping (mm per month)
         self.season_rainfall_mapping = {
             "spring": 150,
-            "summer": 80,
-            "fall": 120,
-            "winter": 200,
+            "yala": 80,
+            "maha": 120,
             "year-round": 140
         }
         
@@ -51,7 +46,7 @@ class MappingService:
             "acidic": 5.5,
             "neutral": 6.8,
             "alkaline": 7.8,
-            "unknown": 6.5
+            
         }
     
     def map_form_to_model_inputs(self, form_data: FormData) -> ModelInputs:
@@ -73,13 +68,13 @@ class MappingService:
             temp_adjustment = self._get_seasonal_temp_adjustment(form_data.season)
             adjusted_temperature = temperature + temp_adjustment
             
-            # Apply farm size adjustments (larger farms might have different microclimates)
-            size_adjustment = self._get_farm_size_adjustment(form_data.farmSize)
+            # # Apply farm size adjustments (larger farms might have different microclimates)
+            # size_adjustment = self._get_farm_size_adjustment(form_data.farmSize)
             
             model_inputs = ModelInputs(
-                N=npk_values["N"] * size_adjustment["N"],
-                P=npk_values["P"] * size_adjustment["P"],
-                K=npk_values["K"] * size_adjustment["K"],
+                N=npk_values["N"],
+                P=npk_values["P"],
+                K=npk_values["K"],
                 temperature=adjusted_temperature,
                 humidity=humidity,
                 ph=ph,
@@ -98,18 +93,17 @@ class MappingService:
         """Get temperature adjustment based on season"""
         adjustments = {
             "spring": 0,
-            "summer": 3,
-            "fall": -2,
-            "winter": -5,
+            "yala": 3,
+            "maha": -2,
             "year-round": 0
         }
         return adjustments.get(season, 0)
     
-    def _get_farm_size_adjustment(self, farm_size: str) -> dict:
-        """Get nutrient adjustment based on farm size"""
-        adjustments = {
-            "small": {"N": 1.0, "P": 1.0, "K": 1.0},      # No adjustment
-            "medium": {"N": 1.1, "P": 1.05, "K": 1.05},   # Slight increase
-            "large": {"N": 1.2, "P": 1.1, "K": 1.1}       # Higher nutrients for large farms
-        }
-        return adjustments.get(farm_size, {"N": 1.0, "P": 1.0, "K": 1.0})
+    # def _get_farm_size_adjustment(self, farm_size: str) -> dict:
+    #     """Get nutrient adjustment based on farm size"""
+    #     adjustments = {
+    #         "small": {"N": 1.0, "P": 1.0, "K": 1.0},      # No adjustment
+    #         "medium": {"N": 1.1, "P": 1.05, "K": 1.05},   # Slight increase
+    #         "large": {"N": 1.2, "P": 1.1, "K": 1.1}       # Higher nutrients for large farms
+    #     }
+    #     return adjustments.get(farm_size, {"N": 1.0, "P": 1.0, "K": 1.0})
