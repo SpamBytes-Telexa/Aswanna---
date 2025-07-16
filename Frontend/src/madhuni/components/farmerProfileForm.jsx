@@ -1,15 +1,43 @@
+import { useNavigate } from "react-router-dom";
+
 function FarmerProfileForm() {
+
+    const navigate = useNavigate();
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        const formData = new FormData(event.target);
+        formData.append("username", localStorage.getItem("username"));
+        const data = {
+            name: formData.get("name"),
+            village: formData.get("village"),
+            crops: formData.get("crops"),
+            about: formData.get("about"),
+            image: formData.get("image") ? formData.get("image") : null, 
+        }
+        
+        const response = await fetch("http://localhost:8000/farmers/add_farmer_details",{
+            method: "POST",
+            body: formData,
+        })
+
+        if(response.ok){
+            alert("Profile created successfully!");
+            navigate('/farmercommunity');
+        }
+    }
+
     return(
         <div className="min-h-screen bg-gradient-to-r from-green-50 to-green-100">
             <h1 className="text-2xl font-bold text-center p-10">ඔබගේ විස්තර මෙහි ඇතුළත් කරන්න</h1>
-            <form className="max-w-md mx-auto mt-8 p-6 bg-white shadow-lg rounded-lg">
+            <form className="max-w-md mx-auto mt-8 p-6 bg-white shadow-lg rounded-lg" onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold m-2 mt-3" htmlFor="name">
                         නම
                     </label>
                     <input
                         type="text"
-                        id="name"
+                        name="name"
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         placeholder="ඔබගේ නම"
                     />
@@ -18,7 +46,7 @@ function FarmerProfileForm() {
                     </label>
                     <input
                         type="text"
-                        id="village"
+                        name="village"
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         placeholder="ඔබගේ ගම"
                     />
@@ -27,7 +55,7 @@ function FarmerProfileForm() {
                     </label>
                     <textarea
                         type="text"
-                        id="crops"
+                        name="crops"
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         placeholder="ඔබ වගා කරන බෝග"
                     />
@@ -36,7 +64,7 @@ function FarmerProfileForm() {
                     </label>
                     <textarea
                         type="text"
-                        id="about"
+                        name="about"
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         placeholder="ඔබ ගැන සදහන් කරන්න"
                     />
@@ -45,7 +73,7 @@ function FarmerProfileForm() {
                     </label>
                     <input
                         type="file"
-                        id="image"
+                        name="image"
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         placeholder="ඔබගේ පින්තූරය"
                     />
