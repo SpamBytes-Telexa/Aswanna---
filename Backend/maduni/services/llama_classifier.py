@@ -1,6 +1,11 @@
 import requests
+import os
+from dotenv import load_dotenv
 
-GROQ_API_KEY = "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"
+load_dotenv()
+
+GROQ_API_KEY = os.getenv('GROQ_API_KEY')
+
 
 def classify_query(query: str) -> str:
     prompt = f"""
