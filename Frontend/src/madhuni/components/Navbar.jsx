@@ -45,9 +45,9 @@ function Navbar() {
               />
               <img
                 src={community}
-                alt="Contracts"
+                alt="Community"
                 className="cursor-pointer w-8 h-8 m-2"
-                onClick={() => navigate('/farmercommunity')}
+                onClick={() => navigate('/farmerProfile')}
               />
             </>
             

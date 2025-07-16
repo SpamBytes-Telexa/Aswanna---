@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException,Response,status
+from fastapi import Form, UploadFile, File
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from uuid import UUID
@@ -26,6 +27,20 @@ def register_user(user: UserBase, db: Session = Depends(get_db)):
             "role": user.role
         })
         db.commit()
+
+        # Insert farmer details
+        query_farmer = text("""
+        CREATE TABLE IF NOT EXISTS farmer_details (
+            name VARCHAR(255),
+            village VARCHAR(255),
+            crops VARCHAR(255),
+            about TEXT,
+            image BYTEA
+        )
+        """)
+        db.execute(query_farmer)
+        db.commit()
+
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=400, detail=f"Registration failed: {str(e)}")
@@ -53,3 +68,34 @@ def login_user(user: UserLogin, response: Response, db: Session = Depends(get_db
         "role": db_user.role,
         "user_name": db_user.name
     }
+
+
+@router.post("/add_farmer_details")
+def add_farmer_details(
+    name: str = Form(...),
+    village: str = Form(...),
+    crops: str = Form(...),
+    about: str = Form(...),
+    image: UploadFile = File(...),
+    db: Session = Depends(get_db)
+):
+    try:
+        image_data = image.file.read()
+        query = text("""
+            INSERT INTO farmer_details (name, village, crops, about, image)
+            VALUES (:name, :village, :crops, :about, :image)
+        """)
+        db.execute(query, {
+            "name": name,
+            "village": village,
+            "crops": crops,
+            "about": about,
+            "image": image_data
+        })
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        print(f"Error adding farmer details: {str(e)}")
+        raise HTTPException(status_code=400, detail=f"Failed to add farmer details: {str(e)}")
+    
+    return {"message": "Farmer details added successfully"}
