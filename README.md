@@ -30,7 +30,6 @@ Aswanna is an agriculture-focused platform that connects farmers, enabling commu
 ### Prerequisites
 
 - Python 3.8+
-- Node.js and npm/yarn
 - PostgreSQL database
 
 ### Backend Setup
