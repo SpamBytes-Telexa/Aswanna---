@@ -8,6 +8,7 @@ class FormData(BaseModel):
     climate: str
     season: str
     experience: str
+
    
 
 class ModelInputs(BaseModel):

@@ -14,7 +14,7 @@ class GeminiService:
         if settings.GEMINI_API_KEY:
             try:
                 genai.configure(api_key=settings.GEMINI_API_KEY)
-                self.model = genai.GenerativeModel('gemini-pro')
+                self.model = genai.GenerativeModel('gemini-1.5-flash')
                 logger.info("Gemini AI configured successfully")
             except Exception as e:
                 logger.error(f"Error configuring Gemini AI: {e}")
@@ -57,9 +57,8 @@ class GeminiService:
         - pH මට්ටම: {form_data.soilPH}
         - දේශගුණය: {form_data.climate}
         - වගා සමය: {form_data.season}
-        - ගොවි බිම් ප්‍රමාණය: {form_data.farmSize}
         - අත්දැකීම: {form_data.experience}
-        - ඉලක්ක: {', '.join(form_data.goals)}
+        
         
         මාදිලියේ පරාමිති:
         - නයිට්‍රජන්: {model_inputs.N}
@@ -90,19 +89,19 @@ class GeminiService:
         [වගා කිරීමේ කාලසටහන විස්තරාත්මකව]
         
         SEED_PREPARATION:
-        [බීජ සකස් කිරීමේ ක්‍රමය]
+        [බීජ සකස් කිරීමේ ක්‍රමය විස්තරාත්මකව බෝගයට අනුව]
         
         SOIL_PREPARATION:
-        [පස සකස් කිරීමේ ක්‍රමය]
+        [පස සකස් කිරීමේ ක්‍රමය විස්තරාත්මකව බෝගයට අනුව]
         
         WATERING:
-        [ජල සම්පාදන උපදෙස්]
+        [ජල සම්පාදන උපදෙස් විස්තරාත්මකව බෝගයට අනුව]
         
         FERTILIZING:
-        [පෝෂණ ක්‍රමය]
-        
+        [පෝෂණ ක්‍රමය විස්තරාත්මකව බෝගයට අනුව]
+
         PEST_CONTROL:
-        [පළිබෝධ හා රෝග පාලන ක්‍රම]
+        [පළිබෝධ හා රෝග පාලන ක්‍රම විස්තරාත්මකව බෝගයට අනුව]
         
         TIPS:
         - [උපදෙස 1]
@@ -113,7 +112,7 @@ class GeminiService:
         ADDITIONAL_INFO:
         [අමතර වැදගත් තොරතුරු]
         
-        සියලු උත්තර සිංහල භාෂාවෙන් ලබා දෙන්න. සරල හා පැහැදිලි භාෂාවක් භාවිතා කරන්න.
+        සියලු උත්තර සිංහල භාෂාවෙන් ලබා දෙන්න. සරල හා පැහැදිලි විස්තරාත්මකව භාෂාවක් භාවිතා කරන්න.
         """
     
     def _parse_gemini_response(self, content: str) -> Dict:

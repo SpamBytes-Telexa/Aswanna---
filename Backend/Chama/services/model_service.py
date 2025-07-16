@@ -37,28 +37,47 @@ class ModelService:
         await self.load_model()
     
     async def load_model(self):
-        
+        """Load the crop recommendation model"""
         try:
             # Try to load from local file first
             if os.path.exists(settings.MODEL_PATH):
                 self.crop_model = joblib.load(settings.MODEL_PATH)
-                logger.info("Model loaded from local file")
+                logger.info(f"Model loaded from local file: {settings.MODEL_PATH}")
                 return
             
-            # Download from GitHub release
-            logger.info(f"Downloading model from {settings.MODEL_URL}")
+            # Try to load from current directory
+            fallback_path = "crop_recommendation_model.pkl"
+            if os.path.exists(fallback_path):
+                self.crop_model = joblib.load(fallback_path)
+                logger.info(f"Model loaded from fallback path: {fallback_path}")
+                return
             
-            response = requests.get(settings.MODEL_URL)
+            # Try to download from GitHub release
+            logger.info(f"Attempting to download model from {settings.MODEL_URL}")
+            
+            response = requests.get(settings.MODEL_URL, timeout=30)
             if response.status_code == 200:
+                # Create models directory if it doesn't exist
+                model_dir = os.path.dirname(settings.MODEL_PATH)
+                if model_dir:  # Only create directory if there's a directory specified
+                    os.makedirs(model_dir, exist_ok=True)
+                
                 with open(settings.MODEL_PATH, "wb") as f:
                     f.write(response.content)
                 self.crop_model = joblib.load(settings.MODEL_PATH)
                 logger.info("Model downloaded and loaded successfully")
             else:
-                logger.error(f"Failed to download model: {response.status_code}")
+                logger.warning(f"Failed to download model: HTTP {response.status_code}")
+                logger.info("Will use rule-based fallback predictions")
                 self.crop_model = None
+                
+        except requests.exceptions.RequestException as e:
+            logger.warning(f"Network error downloading model: {e}")
+            logger.info("Will use rule-based fallback predictions")
+            self.crop_model = None
         except Exception as e:
             logger.error(f"Error loading model: {e}")
+            logger.info("Will use rule-based fallback predictions")
             self.crop_model = None
     
     def is_model_loaded(self) -> bool:

@@ -14,21 +14,13 @@ import Home from "./madhuni/pages/Home";
 //import Weather from "./madhuni/pages/Weather"
 
 import CropRecommendationForm from "./Pages/cropRecommendationForm";
-import RecommendationResults from "./Pages/recommendationResult";
+
 import { useNavigate } from "react-router-dom";
 import SignUp from "./Components/SignUp/sign_up";
 import Login from "./Components/Login/login";
 import { AuthProvider } from "./Components/context/AuthContext";
 import "./i18n";
 const App = () => {
-  const CropRecommendationFormWithNav = () => {
-    const navigate = useNavigate();
-    const handleSubmit = (formData) => {
-      navigate("/recommendation-results", { state: { formData } });
-    };
-    return <CropRecommendationForm onSubmit={handleSubmit} />;
-  };
-
   return (
     <Router>
       <AuthProvider>
@@ -50,11 +42,7 @@ const App = () => {
           {/* Crop Recommendation Routes */}
           <Route
             path="/crop-recommendation"
-            element={<CropRecommendationFormWithNav />}
-          />
-          <Route
-            path="/recommendation-results"
-            element={<RecommendationResults />}
+            element={<CropRecommendationForm />}
           />
 
           <Route path="/plantDisease" element={<PlantDisease />} />

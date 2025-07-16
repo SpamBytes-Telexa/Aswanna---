@@ -11,7 +11,7 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: Optional[str] = os.getenv("GEMINI_API_KEY")
     
     # Model Configuration
-    MODEL_URL: str = "https://github.com/SpamBytes-Telexa/Aswanna---/releases/download/v1.0.0/crop_recommendation_model.pkl"
+    MODEL_URL: str = "https://github.com/SpamBytes-Telexa/Aswanna---/releases/download/v1.0.0/crop_model.pkl"
     MODEL_PATH: str = "crop_recommendation_model.pkl"
     
     # Database Configuration (for future use)
