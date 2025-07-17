@@ -1,68 +1,71 @@
 import Navbar from "../madhuni/components/Navbar";
 import { motion } from "framer-motion";
+import fertilizer1 from "../assets/fertilizer1.jpg";
+import fertilizer2 from "../assets/fertilizer2.jpg";
+import fertilizer3 from "../assets/fertilizer3.jpg";
 
 const defaultPrices = [
     {
         name: "Urea",
         price: 3500,
         discount: "20%",
-        image: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=200&q=80"
+        image: fertilizer1
     },
     {
         name: "Muriate of Potash (MOP)",
         price: 4200,
         discount: "15%",
-        image: "https://images.unsplash.com/photo-1464983953574-0892a716854b?auto=format&fit=crop&w=200&q=80"
+        image: fertilizer2
     },
     {
         name: "Triple Super Phosphate (TSP)",
         price: 3900,
         discount: "18%",
-        image: "https://images.unsplash.com/photo-1509228468518-180dd4864904?auto=format&fit=crop&w=200&q=80"
+        image: fertilizer3
     },
     {
         name: "Eppawala Rock Phosphate",
         price: 2500,
         discount: "10%",
-        image: "https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=200&q=80"
+        image: fertilizer2
     },
     {
         name: "Ammonium Sulphate",
         price: 3200,
         discount: "12%",
-        image: "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=200&q=80"
+        image: fertilizer3
     },
     {
         name: "Organic Fertilizer",
         price: 2800,
         discount: "25%",
-        image: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9f3?auto=format&fit=crop&w=200&q=80"
+        image: fertilizer1
     },
     {
         name: "Neem Cake",
         price: 3000,
         discount: "30%",
-        image: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9f3?auto=format&fit=crop&w=200&q=80"
+        image: fertilizer3
     },
     {
         name: "Gypsum",
         price: 2700,
         discount: "15%",
-        image: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9f3?auto=format&fit=crop&w=200&q=80"
+        image: fertilizer1
     },
     {
         name: "Dolomite",
         price: 3100,
         discount: "20%",
-        image: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9f3?auto=format&fit=crop&w=200&q=80"
+        image: fertilizer2
     },
     {
         name: "Micronutrients",
         price: 4000,
         discount: "15%",
-        image: "https://images.unsplash.com/photo-1506748686214-e9df14d4d9f3?auto=format&fit=crop&w=200&q=80"
+        image: fertilizer1
     }
-]
+];
 
 function Discounts() {
     return (
