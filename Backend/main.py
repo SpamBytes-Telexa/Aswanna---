@@ -17,6 +17,7 @@ from fastapi.middleware.cors import CORSMiddleware
 #from maduni.routes import chat
 from routers import contracts
 from routers import login
+from routers import predict
 
 from Chama.routes import croprecommend
 
@@ -53,7 +54,7 @@ def read_root():
 
 app.include_router(contracts.router, prefix="/blockchain", tags=["contracts"])
 app.include_router(login.router, prefix="/auth", tags=["login"])
-# app.include_router(predict.router, prefix="/ml", tags=["predict"])
+app.include_router(predict.router, prefix="/ml", tags=["predict"])
 app.include_router(croprecommend.router, prefix="/croprecommend", tags=["Crop Recommendation"])
 #app.include_router(predict.router)
 #app.include_router(predict.router, prefix="/ml")

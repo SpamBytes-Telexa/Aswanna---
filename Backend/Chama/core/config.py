@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     
     # Model Configuration
     MODEL_URL: str = "https://github.com/SpamBytes-Telexa/Aswanna---/releases/download/v1.0.0/crop_model.pkl"
-    MODEL_PATH: str = "crop_recommendation_model.pkl"
+    MODEL_PATH: str = "crop_model.pkl"
     
     # Database Configuration (for future use)
     DATABASE_URL: Optional[str] = os.getenv("DATABASE_URL")

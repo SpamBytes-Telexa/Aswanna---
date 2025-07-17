@@ -29,11 +29,18 @@ class ModelService:
             "papaya": "පැපොල්",
             "tomato": "තක්කාලි",
             "potato": "අල",
-            "onion": "ලූණු"
+            "onion": "ලූණු",
+             "blackgram":"උළුදු",
+             "chickpea": "කඩල",
+            "lentil": "මසුරු",
+            "cotton": "කපු",
+            "jute": "ජූට්",
+            "kidneybeans": "මෑකරල්",
+            "watermelon":"කොමඩු"
         }
     
     async def initialize(self):
-        """Initialize the model service"""
+        
         await self.load_model()
     
     async def load_model(self):
