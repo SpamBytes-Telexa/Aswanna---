@@ -29,6 +29,7 @@ import WeatherApp from './madhuni/pages/Weather';
 import FarmerCommunity from './Pages/farmerCommunity';
 import Chat from './Components/FarmerCommunity/chat';
 import FarmerProfileForm from './madhuni/components/farmerProfileForm';
+import Discounts from './Pages/discounts';
 const App = () => {
   const CropRecommendationFormWithNav = () => {
     const navigate = useNavigate();
@@ -81,6 +82,7 @@ const App = () => {
             <Route path='/farmercommunity/chat' element={<Chat/>} />
 
             <Route path='/farmerProfile' element={<FarmerProfileForm/>} />
+            <Route path='/discounts' element={<Discounts/>}/>
           </Routes>
         </AuthProvider>
 
