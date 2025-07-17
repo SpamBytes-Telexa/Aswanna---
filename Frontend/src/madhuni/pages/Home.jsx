@@ -22,7 +22,7 @@ const features = [
     title: "වෙළඳ මිල තොරතුරු",
     emoji: "💰",
     description: "වෙළඳපොලේ ඇති බෝග මිල දිස්ත්‍රික්ක අනුව බලන්න",
-    path: "marketprices",
+    path: "buyer",
   },
   {
     title: "කාලගුණ අනාවැකි",
@@ -104,9 +104,9 @@ const Home = () => {
       }}
     >
       <Navbar></Navbar>
-      <div className="bg-white/80 min-h-screen">
+      <div className="bg-white/80">
         {/* Hero Section */}
-        <section className="pt-32 pb-80 px-4 text-center">
+        <section className="pt-24 pb-24 px-4 text-center">
           <motion.div
             initial="hidden"
             animate="visible"
@@ -152,7 +152,7 @@ const Home = () => {
                 ශ්‍රී ලංකාවේ ගොවීන්ගේ සංකෘතිමත් අනාගතය සදහා නවීන තාක්ෂණික
                 විසඳුම්.
               </p>
-              <p className="text-lg text-gray-600 mb-8">
+              <p className="text-lg text-gray-600 mb-4">
                 අපගේ වේදිකාව ඔබට ලබා දෙන්නේ පළිබෝධ හඳුනාගැනීම, වගා නිර්දේශ,
                 කාලගුණ තොරතුරු සහ වෙළඳපල මිල දත්ත ඇතුළත් සම්පූර්ණ කෘෂිකර්මාන්ත
                 සහය පද්ධතියක්.
@@ -163,7 +163,7 @@ const Home = () => {
 
         {/* Features Section */}
 
-        <section className="py-10 px-4 sm:px-6 lg:px-8 pb-20">
+        <section className="px-4 sm:px-6 lg:px-8 pb-20 mt-0">
           <motion.div
             variants={containerVariants}
             initial="hidden"
@@ -181,7 +181,7 @@ const Home = () => {
                     boxShadow:
                       "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
                   }}
-                  className="relative bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 border-l-4 border-green-500 p-6
+                  className="relative bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 border-l-4 border-green-500 mt-0 p-6 h-48
                         hover:border-green-600 hover:bg-green-50 group"
                 >
                   {/* Animated background element */}
@@ -223,7 +223,7 @@ const Home = () => {
           viewport={{ once: true }}
         >
           <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div>
+            <div className="mx-32">
               <h3 className="text-xl font-bold mb-1">අස්වැන්න</h3>
               <p className="text-green-100 text-sm">
                 ශ්‍රී ලංකාවේ ගොවීන් සඳහා නවීන තාක්ෂණික විසඳුම්.

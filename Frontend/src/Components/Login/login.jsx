@@ -22,10 +22,14 @@ const Login = () => {
       );
 
       if (result.data.message === "Login Success") {
+        console.log("Login successful:", result.data);
         login(result.data.access_token);
+        localStorage.setItem("token", result.data.access_token);
+        localStorage.setItem("role", JSON.stringify(result.data.role));
+        localStorage.setItem("username", result.data.user_name.toLocaleLowerCase().trim());
 
         if (result.data.role === "farmer" ) {
-          navigate("/contracts");
+          navigate("/farmer");
         } else if (result.data.role === "buyer") {
           navigate("/buyer");
         } else  {

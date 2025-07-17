@@ -1,6 +1,10 @@
 import httpx
+import os
+from dotenv import load_dotenv
 
-TAVILY_API_KEY = "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"
+load_dotenv()
+
+TAVILY_API_KEY = os.getenv('TAVILY_API_KEY')
 
 def get_tavily_response(query: str) -> str:
     url = "https://api.tavily.com/search"

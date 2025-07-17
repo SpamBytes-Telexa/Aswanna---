@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException,Response,status
+from fastapi import Form, UploadFile, File
 from sqlalchemy.orm import Session
 from sqlalchemy import text
 from uuid import UUID
@@ -26,6 +27,22 @@ def register_user(user: UserBase, db: Session = Depends(get_db)):
             "role": user.role
         })
         db.commit()
+
+        # Insert farmer details
+        query_farmer = text("""
+        CREATE TABLE IF NOT EXISTS farmer_details (
+            username VARCHAR(255) PRIMARY KEY,
+            name VARCHAR(255),
+            village VARCHAR(255),
+            crops VARCHAR(255),
+            connectedFarmers TEXT[],
+            about TEXT,
+            image BYTEA
+        )
+        """)
+        db.execute(query_farmer)
+        db.commit()
+
     except Exception as e:
         db.rollback()
         raise HTTPException(status_code=400, detail=f"Registration failed: {str(e)}")
@@ -35,6 +52,21 @@ def register_user(user: UserBase, db: Session = Depends(get_db)):
 @router.post("/login")
 def login_user(user: UserLogin, response: Response, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.email == user.email).first()
+
+    query_farmer = text("""
+        CREATE TABLE IF NOT EXISTS farmer_details (
+            username VARCHAR(255) PRIMARY KEY,
+            name VARCHAR(255),
+            village VARCHAR(255),
+            crops VARCHAR(255),
+            connectedFarmers TEXT[],
+            about TEXT,
+            image BYTEA
+        );
+        
+        """)
+    db.execute(query_farmer)
+    db.commit()
 
     if not db_user or not verify_password(user.password , db_user.password_hash):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials")
