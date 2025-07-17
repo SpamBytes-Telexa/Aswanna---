@@ -48,42 +48,25 @@ const App = () => {
           {/* Weather and Chatbot routes */}
           {/* <Route path="/weatherforecast" element={<Weather />} /> */}
           {/* <Route path="/chatbot" element={<Chatbot />} /> */}
-          <Router>
-            <AuthProvider>
-              <Routes>
-                <Route path="/" element={<Main />} />
-                <Route path="/farmer" element={<Home />} />
+          <Route path="/" element={<Main />} />
+          <Route path="/farmer" element={<Home />} />
 
-                <Route path="/signup" element={<SignUp />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/farmerform" element={<FarmerForm />} />
-                <Route path="/contracts" element={<Farmer_contracts />} />
-                <Route path="/buyer" element={<BuyerUI />} />
-                <Route path="/offer/:id" element={<OfferDetails />} />
-                <Route path="/my_purchases" element={<MyPurchases />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/farmerform" element={<FarmerForm />} />
+          <Route path="/contracts" element={<Farmer_contracts />} />
+          <Route path="/buyer" element={<BuyerUI />} />
+          <Route path="/offer/:id" element={<OfferDetails />} />
+          <Route path="/my_purchases" element={<MyPurchases />} />
 
-                {/* Weather and Chatbot routes */}
-                <Route path="/weatherforecast" element={<Weather />} />
-                <Route path="/chatbot" element={<Chatbot />} />
+          {/* Weather and Chatbot routes */}
+          <Route path="/weatherforecast" element={<Weather />} />
+          <Route path="/chatbot" element={<Chatbot />} />
 
-                {/* Crop Recommendation Routes */}
-                <Route
-                  path="/crop-recommendation"
-                  element={<CropRecommendationForm />}
-                />
-
-                <Route path="/plantDisease" element={<PlantDisease />} />
-              </Routes>
-            </AuthProvider>
-          </Router>
           {/* Crop Recommendation Routes */}
           <Route
             path="/crop-recommendation"
-            element={<CropRecommendationFormWithNav />}
-          />
-          <Route
-            path="/recommendation-results"
-            element={<RecommendationResults />}
+            element={<CropRecommendationForm />}
           />
 
           <Route path="/plantDisease" element={<PlantDisease />} />
