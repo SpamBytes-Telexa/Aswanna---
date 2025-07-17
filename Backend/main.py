@@ -1,29 +1,28 @@
 from fastapi import FastAPI, Depends, WebSocket, WebSocketDisconnect, HTTPException
 from sqlalchemy.orm import Session
-#from uuid import UUID
+from uuid import UUID
 from database import engine, get_db
-#from models import Base, CropOffer
+from models import Base, CropOffer
 from fastapi.middleware.cors import CORSMiddleware
 from routers import predict
 
 
 
-#from maduni.routes import chat
-#from maduni.routes import weather
-#from maduni.routes import location
-#from maduni.routes import weather16
+from maduni.routes import chatbot
+from maduni.routes import weather
+from maduni.routes import location
+from maduni.routes import weather16
 
 
-#from maduni.routes import chat
 from routers import contracts
 from routers import login
 from routers import farmers
 from routers import chat
 
-#from routers import contracts;    
+from routers import contracts;    
 app = FastAPI()
 
-#Base.metadata.create_all(bind=engine)
+Base.metadata.create_all(bind=engine)
 
 
 origins = [
@@ -47,18 +46,18 @@ def read_root():
 
 
 
-#app.include_router(chat.router, prefix='/chatbot', tags=['Chatbot'])
-#app.include_router(weather.router, prefix='/weather', tags=['Weather'])
-#app.include_router(location.router, prefix='/location', tags=['Weather'])
-#app.include_router(weather16.router, prefix='/weatherfor16days', tags=['Weather'])
+app.include_router(chatbot.router, prefix='/chatbot', tags=['Chatbot'])
+app.include_router(weather.router, prefix='/weather', tags=['Weather'])
+app.include_router(location.router, prefix='/location', tags=['Weather'])
+app.include_router(weather16.router, prefix='/weatherfor16days', tags=['Weather'])
 
 app.include_router(contracts.router, prefix="/blockchain", tags=["contracts"])
 app.include_router(login.router, prefix="/auth", tags=["login"])
 app.include_router(predict.router, prefix="/ml", tags=["predict"])
 app.include_router(farmers.router, prefix="/farmers", tags=["farmers"])
 app.include_router(chat.router, prefix="/farmers", tags=["chat"])
-#app.include_router(predict.router)
-#app.include_router(predict.router, prefix="/ml")
+app.include_router(predict.router)
+app.include_router(predict.router, prefix="/ml")
 
 
 
