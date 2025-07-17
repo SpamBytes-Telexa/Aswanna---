@@ -4,7 +4,7 @@ from uuid import UUID
 from database import engine, get_db
 from models import Base, CropOffer
 from fastapi.middleware.cors import CORSMiddleware
-from routers import predict
+# from routers import predict
 
 
 
@@ -18,6 +18,9 @@ from routers import contracts
 from routers import login
 from routers import farmers
 from routers import chat
+from routers import predict
+
+from Chama.routes import croprecommend
 
 from routers import contracts;    
 app = FastAPI()
@@ -163,4 +166,7 @@ async def save_message_to_db(sender: str, receiver: str, message_text: str, time
         db.rollback()
         print(f"Error saving message to DB: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to save message to database")
+app.include_router(croprecommend.router, prefix="/croprecommend", tags=["Crop Recommendation"])
+#app.include_router(predict.router)
+#app.include_router(predict.router, prefix="/ml")
 

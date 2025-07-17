@@ -10,7 +10,7 @@ const features = [
     title: "පළිබෝධ හඳුනා ගැනීම",
     emoji: "📷",
     description: "ඔබගේ බෝගයේ රෝග සහ පළිබෝධ ඡායාරූපයකින් හඳුනා ගන්න",
-    path: "plantDisease"
+    path: "plantDisease",
   },
   {
     title: "වගා නිර්දේශ",
@@ -43,7 +43,6 @@ const features = [
     path: "discounts",
   },
 ];
-
 
 // Animation Variants
 const containerVariants = {
@@ -81,19 +80,18 @@ const letterVariants = {
       delay: i * 0.1,
       type: "spring",
       damping: 12,
-      stiffness: 100
-    }
+      stiffness: 100,
+    },
   }),
   hover: {
     y: [0, -10, 0],
     transition: {
       duration: 0.8,
       repeat: Infinity,
-      repeatType: "reverse"
-    }
-  }
+      repeatType: "reverse",
+    },
+  },
 };
-
 
 const Home = () => {
   return (
@@ -114,28 +112,24 @@ const Home = () => {
             animate="visible"
             variants={fadeInVariant}
           >
-            
-
-            <motion.h1 
-            className="mt-2 text-[120px] font-bold text-green-800 mb-4"
-            initial="hidden"
-            animate="visible"
-            whileHover="hover"
+            <motion.h1
+              className="mt-2 text-[120px] font-bold text-green-800 mb-4"
+              initial="hidden"
+              animate="visible"
+              whileHover="hover"
             >
-            {"අස්වැන්න".split("").map((letter, index) => (
+              {"අස්වැන්න".split("").map((letter, index) => (
                 <motion.span
-                key={index}
-                custom={index}
-                variants={letterVariants}
-                style={{ display: "inline-block" }}
-                whileHover={{ scale: 1.2, color: "#14532d" }}
+                  key={index}
+                  custom={index}
+                  variants={letterVariants}
+                  style={{ display: "inline-block" }}
+                  whileHover={{ scale: 1.2, color: "#14532d" }}
                 >
-                {letter === " " ? "\u00A0" : letter}
+                  {letter === " " ? "\u00A0" : letter}
                 </motion.span>
-            ))}
+              ))}
             </motion.h1>
-
-            
 
             <motion.h2
               className="mt-20 text-3xl sm:text-5xl font-semibold text-yellow-600 mb-6"
@@ -155,7 +149,8 @@ const Home = () => {
               viewport={{ once: true }}
             >
               <p className="text-xl text-gray-700 mb-6">
-                ශ්‍රී ලංකාවේ ගොවීන්ගේ සංකෘතිමත් අනාගතය සදහා නවීන තාක්ෂණික විසඳුම්.
+                ශ්‍රී ලංකාවේ ගොවීන්ගේ සංකෘතිමත් අනාගතය සදහා නවීන තාක්ෂණික
+                විසඳුම්.
               </p>
               <p className="text-lg text-gray-600 mb-4">
                 අපගේ වේදිකාව ඔබට ලබා දෙන්නේ පළිබෝධ හඳුනාගැනීම, වගා නිර්දේශ,
@@ -167,54 +162,56 @@ const Home = () => {
         </section>
 
         {/* Features Section */}
-        
 
         <section className="px-4 sm:px-6 lg:px-8 pb-20 mt-0">
-        <motion.div
+          <motion.div
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true }}
             className="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
-        >
+          >
             {features.map((feature, index) => (
-            <Link to={`/${feature.path}`} key={index}>
-            <motion.div
-                variants={itemVariants}
-                whileHover={{ 
-                y: -8, 
-                scale: 1.05,
-                boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
-                }}
-                className="relative bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 border-l-4 border-green-500 mt-0 p-6 h-48
+              <Link to={`/${feature.path}`} key={index}>
+                <motion.div
+                  variants={itemVariants}
+                  whileHover={{
+                    y: -8,
+                    scale: 1.05,
+                    boxShadow:
+                      "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                  }}
+                  className="relative bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 border-l-4 border-green-500 mt-0 p-6 h-48
                         hover:border-green-600 hover:bg-green-50 group"
-            >
-                {/* Animated background element */}
-                <div className="absolute inset-0 bg-gradient-to-br from-green-100 to-yellow-50 opacity-0 
-                                group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
-                
-                {/* Emoji with pop effect */}
-                <motion.div 
-                whileHover={{ scale: 1.2, rotate: 5 }}
-                className="text-4xl mb-3 inline-block"
                 >
-                {feature.emoji}
+                  {/* Animated background element */}
+                  <div
+                    className="absolute inset-0 bg-gradient-to-br from-green-100 to-yellow-50 opacity-0 
+                                group-hover:opacity-100 transition-opacity duration-500 -z-10"
+                  ></div>
+
+                  {/* Emoji with pop effect */}
+                  <motion.div
+                    whileHover={{ scale: 1.2, rotate: 5 }}
+                    className="text-4xl mb-3 inline-block"
+                  >
+                    {feature.emoji}
+                  </motion.div>
+
+                  {/* Text with subtle color change */}
+                  <h3 className="text-lg font-bold text-green-800 mb-2 group-hover:text-green-900 transition-colors">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm group-hover:text-gray-800 transition-colors">
+                    {feature.description}
+                  </p>
+
+                  {/* Animated underline */}
+                  <div className="absolute bottom-0 left-0 w-0 h-1 bg-yellow-400 group-hover:w-full transition-all duration-500"></div>
                 </motion.div>
-                
-                {/* Text with subtle color change */}
-                <h3 className="text-lg font-bold text-green-800 mb-2 group-hover:text-green-900 transition-colors">
-                {feature.title}
-                </h3>
-                <p className="text-gray-600 text-sm group-hover:text-gray-800 transition-colors">
-                {feature.description}
-                </p>
-                
-                {/* Animated underline */}
-                <div className="absolute bottom-0 left-0 w-0 h-1 bg-yellow-400 group-hover:w-full transition-all duration-500"></div>
-            </motion.div>
-            </Link>
+              </Link>
             ))}
-        </motion.div>
+          </motion.div>
         </section>
 
         {/* Footer */}
@@ -259,15 +256,23 @@ const Home = () => {
               <p className="text-green-100 text-sm">info@aswana.lk</p>
               <p className="text-green-100 text-sm">+94 76 123 4567</p>
               <div className="flex space-x-2 mt-1">
-                <a href="#" className="text-lg hover:text-yellow-300">📱</a>
-                <a href="#" className="text-lg hover:text-yellow-300">💬</a>
-                <a href="#" className="text-lg hover:text-yellow-300">📧</a>
+                <a href="#" className="text-lg hover:text-yellow-300">
+                  📱
+                </a>
+                <a href="#" className="text-lg hover:text-yellow-300">
+                  💬
+                </a>
+                <a href="#" className="text-lg hover:text-yellow-300">
+                  📧
+                </a>
               </div>
             </div>
           </div>
 
           <div className="border-t border-green-700 mt-3 pt-3 text-center text-green-100 text-sm">
-            <p>© {new Date().getFullYear()} අස්වැන්න. සියලුම හිමිකම් ඇවිරිණි.</p>
+            <p>
+              © {new Date().getFullYear()} අස්වැන්න. සියලුම හිමිකම් ඇවිරිණි.
+            </p>
           </div>
         </motion.footer>
 
