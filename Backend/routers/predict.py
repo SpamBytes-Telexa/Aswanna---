@@ -4,11 +4,27 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 import numpy as np
 from PIL import Image
-import io
+import io,os,requests
 
 router = APIRouter()
 
-model = load_model("model/model.h5")
+#model = load_model("model/model.h5") 
+url = "https://github.com/SpamBytes-Telexa/Aswanna---/releases/download/v1.0/model.h5"
+dest_path = "MLModels/model.h5"
+
+if not os.path.exists(dest_path):
+    print("Downloading model...")
+    r = requests.get(url)
+
+    os.makedirs(os.path.dirname(dest_path), exist_ok=True)
+
+    with open(dest_path, "wb") as f:
+        f.write(r.content)
+    print("Download complete!")
+else:
+    print("Model already exists.")
+
+model = load_model(dest_path)
 class_names = ['healthy', 'rust', 'powdery']  # Adjust as needed
 
 def read_imagefile(file) -> Image.Image:
