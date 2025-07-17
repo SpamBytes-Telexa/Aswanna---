@@ -3,6 +3,9 @@ from typing import Optional
 from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
+
+    groq_api_key: str | None = None
+    tavily_api_key: str | None = None
     # API Configuration
     API_V1_STR: str = "/api/v1"
     PROJECT_NAME: str = "Crop Recommendation API"
@@ -22,5 +25,6 @@ class Settings(BaseSettings):
     
     class Config:
         env_file = ".env"
+        extra="allow"
 
 settings = Settings()
