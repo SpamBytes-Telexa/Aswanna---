@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 import ChatbotButton from "../../../madhuni/components/chatbotbutton";
 import Navbar from "../../../madhuni/components/Navbar";
 import { motion } from "framer-motion";
+import paddy from "../../../assets/tea4.jpeg";
 import GraphemeSplitter from "grapheme-splitter";
-import homeImage from "../../../assets/home.jpeg";
 
 const splitter = new GraphemeSplitter();
 const letters = splitter.splitGraphemes("අස්වැන්න");
@@ -58,8 +58,10 @@ const features = [
     description: "පොහොර හා උපකරණ සඳහා වට්ටම් බලන්න",
     path: "discounts",
   },
+  
 ];
 
+// Animation Variants
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -74,6 +76,15 @@ const itemVariants = {
     y: 0,
     opacity: 1,
     transition: { duration: 0.5 },
+  },
+};
+
+const fadeInVariant = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.8 },
   },
 };
 
@@ -101,134 +112,190 @@ const letterVariants = {
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-white text-gray-800 font-sinhala">
-      <Navbar />
-
-      {/* HERO SECTION */}
-      <section className="flex flex-col md:flex-row w-full h-[60vh]">
-        {/* Left 1/3 - Text Content */}
-        <div className="w-full md:w-1/3 flex flex-col justify-center px-6 sm:px-16 lg:px-16 bg-[#7cb441ff]">
-          <motion.h1
-            className="text-8xl sm:text-7xl font-extrabold text-green-800 mb-4 flex flex-wrap"
+    <div
+      className="min-h-screen bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage: `url(${paddy})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+      }}
+    >
+      <Navbar></Navbar>
+      <div className="bg-white/80">
+        {/* Hero Section */}
+        <section className="pt-24 pb-24 px-4 text-center">
+          <motion.div
             initial="hidden"
             animate="visible"
+            variants={fadeInVariant}
           >
-            {letters.map((letter, index) => (
-              <motion.span
-                key={index}
-                custom={index}
-                variants={letterVariants}
-                className="inline-block"
-                whileHover={{ scale: 1.8, color: "#21571cff" }}
-              >
-                {letter === " " ? "\u00A0" : letter}
-              </motion.span>
-            ))}
-          </motion.h1>
+            <motion.h1
+              className="mt-2 text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-extrabold text-green-800 mb-4 flex flex-wrap justify-center"
+              initial="hidden"
+              animate="visible"
+              whileHover="hover"
+            >
+              {letters.map((letter, index) => (
+                <motion.span
+                  key={index}
+                  custom={index}
+                  variants={letterVariants}
+                  className="inline-block"
+                  whileHover={{ scale: 1.2, color: "#14532d" }}
+                >
+                  {letter === " " ? "\u00A0" : letter}
+                </motion.span>
+              ))}
+            </motion.h1>
 
-          <p className="text-gray-900 text-lg sm:text-xl font-medium mb-4 leading-relaxed">
-            ශ්‍රී ලංකාවේ ගොවීන්ගේ අනාගතය වෙනස් කරන නවීන තාක්ෂණික විසඳුමක්.
-          </p>
 
-          <p className="text-gray-900 text-base sm:text-lg leading-relaxed">
-            වගා නිර්දේශ, කාලගුණ විශ්ලේෂණ, පළිබෝධ හඳුනාගැනීම, වෙළඳ මිල තොරතුරු, සමාජ ජාලය – ඔක්කොම එකම වේදිකාවකින්!
-          </p>
-        </div>
+            <motion.h2
+              className="mt-20 text-3xl sm:text-5xl font-semibold text-yellow-600 mb-6"
+              initial="hidden"
+              whileInView="visible"
+              variants={fadeInVariant}
+              viewport={{ once: true }}
+            >
+              අස්වැන්න වෙත පිළිගනිමු!
+            </motion.h2>
 
-        {/* Right 2/3 - Image */}
-        <div className="w-full md:w-2/3 h-[60vh]">
-          <img
-            src={homeImage}
-            alt="Home"
-            className="w-full h-full object-cover"
-          />
-        </div>
-      </section>
+            <motion.div
+              className="max-w-3xl mx-auto"
+              initial="hidden"
+              whileInView="visible"
+              variants={fadeInVariant}
+              viewport={{ once: true }}
+            >
+              <p className="text-xl text-gray-700 mb-6">
+                ශ්‍රී ලංකාවේ ගොවීන්ගේ සංකෘතිමත් අනාගතය සදහා නවීන තාක්ෂණික
+                විසඳුම්.
+              </p>
+              <p className="text-lg text-gray-600 mb-4">
+                අපගේ වේදිකාව ඔබට ලබා දෙන්නේ පළිබෝධ හඳුනාගැනීම, වගා නිර්දේශ,
+                කාලගුණ තොරතුරු සහ වෙළඳපල මිල දත්ත ඇතුළත් සම්පූර්ණ කෘෂිකර්මාන්ත
+                සහය පද්ධතියක්.
+              </p>
+            </motion.div>
+          </motion.div>
+        </section>
 
-      {/* FEATURE CARDS */}
-      <section className="px-4 sm:px-6 lg:px-8 py-20">
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true }}
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-6xl mx-auto"
-        >
-          {features.map((feature, index) => (
-            <Link to={`/${feature.path}`} key={index}>
-              <motion.div
-                variants={itemVariants}
-                whileHover={{
-                  scale: 1.06,
-                  y: -5,
-                  boxShadow: "0 20px 40px rgba(21, 128, 61, 0.3)",
-                }}
-                className="relative group bg-green-900 border border-green-300 rounded-2xl p-6 h-52 shadow-lg transition-all duration-300 ease-in-out overflow-hidden"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-[#7cb441ff] via-white to-[#7cb441ff] animate-pulse rounded-2xl blur-sm -z-10"></div>
+        {/* Features Section */}
 
-                <div className="relative z-10">
+        <section className="px-4 sm:px-6 lg:px-8 pb-20 mt-0">
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            className="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-4xl mx-auto"
+          >
+            {features.map((feature, index) => (
+              <Link to={`/${feature.path}`} key={index}>
+                <motion.div
+                  variants={itemVariants}
+                  whileHover={{
+                    y: -8,
+                    scale: 1.05,
+                    boxShadow:
+                      "0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)",
+                  }}
+                  className="relative bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 border-l-4 border-green-500 mt-0 p-6 h-48
+                        hover:border-green-600 hover:bg-green-50 group"
+                >
+                  {/* Animated background element */}
+                  <div
+                    className="absolute inset-0 bg-gradient-to-br from-green-100 to-yellow-50 opacity-0 
+                                group-hover:opacity-100 transition-opacity duration-500 -z-10"
+                  ></div>
+
+                  {/* Emoji with pop effect */}
                   <motion.div
-                    whileHover={{ rotate: [0, 10, -10, 0], scale: 1.2 }}
-                    className="text-5xl mb-3"
+                    whileHover={{ scale: 1.2, rotate: 5 }}
+                    className="text-4xl mb-3 inline-block"
                   >
                     {feature.emoji}
                   </motion.div>
 
-                  <h3 className="text-lg font-bold text-white group-hover:text-green-800 transition duration-300">
+                  {/* Text with subtle color change */}
+                  <h3 className="text-lg font-bold text-green-800 mb-2 group-hover:text-green-900 transition-colors">
                     {feature.title}
                   </h3>
-
-                  <p className="text-sm text-white group-hover:text-gray-800 transition duration-300">
+                  <p className="text-gray-600 text-sm group-hover:text-gray-800 transition-colors">
                     {feature.description}
                   </p>
-                </div>
-              </motion.div>
-            </Link>
-          ))}
-        </motion.div>
-      </section>
 
-      {/* FOOTER */}
-      <motion.footer
-        className="bg-green-800 text-white py-12 px-6 border-t border-green-700"
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-      >
-        <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-          <div>
-            <h3 className="text-2xl font-bold mb-3">අස්වැන්න</h3>
-            <p className="text-white/80 text-sm leading-relaxed">
-              ශ්‍රී ලංකාවේ ගොවීන් සඳහා නවීන තාක්ෂණික විසඳුම්.
-            </p>
-          </div>
-          <div>
-            <h4 className="text-xl font-semibold mb-3 text-lime-300">සබැඳි</h4>
-            <ul className="space-y-2 text-sm text-white/90">
-              <li><a href="#" className="hover:text-lime-300 transition duration-300">ගිණුම</a></li>
-              <li><a href="#" className="hover:text-lime-300 transition duration-300">සේවා</a></li>
-              <li><a href="#" className="hover:text-lime-300 transition duration-300">රහස්‍යතා ප්‍රතිපත්තිය</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-xl font-semibold mb-3 text-lime-300">අමතන්න</h4>
-            <p className="text-white/80 text-sm">info@aswana.lk</p>
-            <p className="text-white/80 text-sm">+94 76 123 4567</p>
-            <div className="flex items-center space-x-4 mt-4 text-2xl text-white">
-              <a href="#" className="hover:text-lime-300 transition duration-300">📱</a>
-              <a href="#" className="hover:text-lime-300 transition duration-300">💬</a>
-              <a href="#" className="hover:text-lime-300 transition duration-300">📧</a>
+                  {/* Animated underline */}
+                  <div className="absolute bottom-0 left-0 w-0 h-1 bg-yellow-400 group-hover:w-full transition-all duration-500"></div>
+                </motion.div>
+              </Link>
+            ))}
+          </motion.div>
+        </section>
+
+        {/* Footer */}
+        <motion.footer
+          className="bg-green-800 text-white py-4 px-4"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+        >
+          <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="mx-32">
+              <h3 className="text-xl font-bold mb-1">අස්වැන්න</h3>
+              <p className="text-green-100 text-sm">
+                ශ්‍රී ලංකාවේ ගොවීන් සඳහා නවීන තාක්ෂණික විසඳුම්.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="text-lg font-semibold mb-1">සබැඳි</h4>
+              <ul className="space-y-0.5 text-sm">
+                <li>
+                  <a href="#" className="hover:text-yellow-300 transition">
+                    ගිණුම
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-yellow-300 transition">
+                    සේවා
+                  </a>
+                </li>
+                <li>
+                  <a href="#" className="hover:text-yellow-300 transition">
+                    රහස්‍යතා ප්‍රතිපත්තිය
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-lg font-semibold mb-1">අමතන්න</h4>
+              <p className="text-green-100 text-sm">info@aswana.lk</p>
+              <p className="text-green-100 text-sm">+94 76 123 4567</p>
+              <div className="flex space-x-2 mt-1">
+                <a href="#" className="text-lg hover:text-yellow-300">
+                  📱
+                </a>
+                <a href="#" className="text-lg hover:text-yellow-300">
+                  💬
+                </a>
+                <a href="#" className="text-lg hover:text-yellow-300">
+                  📧
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="mt-10 pt-6 border-t border-green-700 text-center text-sm text-white/70">
-          <p>© {new Date().getFullYear()} අස්වැන්න. සියලුම හිමිකම් ඇවිරිණි.</p>
-        </div>
-      </motion.footer>
 
-      <ChatbotButton />
+          <div className="border-t border-green-700 mt-3 pt-3 text-center text-green-100 text-sm">
+            <p>
+              © {new Date().getFullYear()} අස්වැන්න. සියලුම හිමිකම් ඇවිරිණි.
+            </p>
+          </div>
+        </motion.footer>
+
+        <ChatbotButton />
+      </div>
     </div>
   );
 };
