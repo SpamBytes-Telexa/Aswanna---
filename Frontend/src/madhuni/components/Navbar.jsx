@@ -1,22 +1,38 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom'; 
 import DensityMediumIcon from '@mui/icons-material/DensityMedium';
 import HomeIcon from '@mui/icons-material/Home';
 import { useState, useEffect } from 'react';
-import contracts from '../../assets/farmer_contract.png'; // Example image import
-import community from '../../assets/community.png'; // Example image import
+import contracts from '../../assets/farmer_contract.png';
+import community from '../../assets/community.png';
 
 function Navbar() {
-  const navigate = useNavigate(); // ✅ use the hook
-  const [loggedIn, setLoggedIn] = useState(false); 
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const isFarmer = localStorage.getItem("role") === '"farmer"';
 
+  // Sync login status on page load and on location change
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (token) {
-        setLoggedIn(true);
-    }
-  },[]);
+    setLoggedIn(!!token);
+  }, [location]);
+
+  // Sync login status across tabs
+  useEffect(() => {
+    const handleStorageChange = () => {
+      setLoggedIn(!!localStorage.getItem("token"));
+    };
+    window.addEventListener("storage", handleStorageChange);
+    return () => window.removeEventListener("storage", handleStorageChange);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    setLoggedIn(false);
+    navigate('/');
+  };
 
   return (
     <div className="bg-green-800 text-white py-1 px-4 w-full h-14 md:h-16 shadow-md">
@@ -33,8 +49,9 @@ function Navbar() {
           <HomeIcon
             className="cursor-pointer hover:text-yellow-300"
             fontSize="small"
-            onClick={() => navigate('/')} // optional: make Home icon work too
+            onClick={() => navigate('/')}
           />
+
           {isFarmer && (
             <>
               <img
@@ -50,32 +67,30 @@ function Navbar() {
                 onClick={() => navigate('/farmerProfile')}
               />
             </>
-            
           )}
-          {console.log(isFarmer)}
+
           {loggedIn ? (
-            <button className="bg-gray-900 hover:bg-gray-700 px-3 py-1 m-2 rounded text-xs"
-            onClick={() => {
-              localStorage.removeItem("token");
-              navigate('/login'); 
-              setLoggedIn(false); 
-            }}>
+            <button
+              className="bg-gray-900 hover:bg-gray-700 px-3 py-1 m-2 rounded text-xs"
+              onClick={handleLogout}
+            >
               Logout
             </button>
-          ):(
-              <>
-                <button
-                  className="bg-white hover:bg-gray-200 text-black font-medium px-3 py-1 m-2 rounded text-xs"
-                  onClick={() => navigate('/login')} // ✅ Corrected
-                >
-                  Login
-                </button>
-
-                <button className="bg-white hover:bg-gray-200 text-black font-medium px-3 py-1 m-2 rounded text-xs"
-                  onClick={() => navigate('/signup')}> 
-                  Register
-                </button>
-              </>
+          ) : (
+            <>
+              <button
+                className="bg-white hover:bg-gray-200 text-black font-medium px-3 py-1 m-2 rounded text-xs"
+                onClick={() => navigate('/login')}
+              >
+                Login
+              </button>
+              <button
+                className="bg-white hover:bg-gray-200 text-black font-medium px-3 py-1 m-2 rounded text-xs"
+                onClick={() => navigate('/signup')}
+              >
+                Register
+              </button>
+            </>
           )}
 
           <DensityMediumIcon className="cursor-pointer hover:text-yellow-300" fontSize="small" />

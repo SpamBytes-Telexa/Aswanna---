@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ChatbotButton from "../components/chatbotbutton";
-import Navbar from "../components/Navbar";
+import Navbar from "../../madhuni/components/Navbar";
 import { motion } from "framer-motion";
 import paddy from "../../assets/tea4.jpeg";
 
@@ -42,6 +42,7 @@ const features = [
     description: "පොහොර හා උපකරණ සඳහා වට්ටම් බලන්න",
     path: "discounts",
   },
+  
 ];
 
 // Animation Variants
