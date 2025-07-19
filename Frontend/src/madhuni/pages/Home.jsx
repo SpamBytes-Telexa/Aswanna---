@@ -4,7 +4,10 @@ import ChatbotButton from "../components/chatbotbutton";
 import Navbar from "../../madhuni/components/Navbar";
 import { motion } from "framer-motion";
 import paddy from "../../assets/tea4.jpeg";
+import GraphemeSplitter from "grapheme-splitter";
 
+const splitter = new GraphemeSplitter();
+const letters = splitter.splitGraphemes("අස්වැන්න");
 const features = [
   {
     title: "පළිබෝධ හඳුනා ගැනීම",
@@ -114,17 +117,17 @@ const Home = () => {
             variants={fadeInVariant}
           >
             <motion.h1
-              className="mt-2 text-[120px] font-bold text-green-800 mb-4"
+              className="mt-2 text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-extrabold text-green-800 mb-4 flex flex-wrap justify-center"
               initial="hidden"
               animate="visible"
               whileHover="hover"
             >
-              {"අස්වැන්න".split("").map((letter, index) => (
+              {letters.map((letter, index) => (
                 <motion.span
                   key={index}
                   custom={index}
                   variants={letterVariants}
-                  style={{ display: "inline-block" }}
+                  className="inline-block"
                   whileHover={{ scale: 1.2, color: "#14532d" }}
                 >
                   {letter === " " ? "\u00A0" : letter}
