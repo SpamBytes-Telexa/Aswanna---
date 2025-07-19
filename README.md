@@ -20,6 +20,7 @@ Aswanna is an agriculture-focused platform that connects farmers, enabling commu
 - **Backend:** FastAPI, SQLAlchemy, PostgreSQL
 - **Frontend:** React, Framer Motion, React Router
 - **Communication:** WebSocket for real-time chat
+- **Blockchain smart contracts:** Solidity
 - **Database:** PostgreSQL
 - **Other:** Docker (optional), CORS middleware
 
