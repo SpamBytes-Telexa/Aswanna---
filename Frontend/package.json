@@ -17,6 +17,7 @@
     "axios": "^1.10.0",
     "ethers": "^6.15.0",
     "framer-motion": "^12.23.0",
+    "grapheme-splitter": "^1.0.4",
     "i18next": "^25.3.2",
     "i18next-browser-languagedetector": "^8.2.0",
     "js-cookie": "^3.0.5",
@@ -26,7 +27,8 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-i18next": "^15.6.0",
-    "react-router-dom": "^7.6.3"
+    "react-router-dom": "^7.6.3",
+    "tailwindcss-animated": "^2.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.29.0",
