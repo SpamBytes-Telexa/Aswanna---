@@ -24,7 +24,7 @@ function Navbar() {
         {/* Navigation Buttons */}
         <div className="flex items-center space-x-4">
           <button
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/farmer_home")}
             className="hover:text-yellow-300 transition-colors duration-200"
             title="Home"
           >

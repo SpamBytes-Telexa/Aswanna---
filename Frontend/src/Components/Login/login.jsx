@@ -32,7 +32,7 @@ const Login = () => {
 
 
         if (result.data.role === "farmer" ) {
-          navigate("/farmer");
+          navigate("/farmer_home");
 
         } else if (result.data.role === "buyer") {
           navigate("/buyer");

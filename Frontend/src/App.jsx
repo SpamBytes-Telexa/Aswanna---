@@ -30,6 +30,7 @@ import FarmerCommunity from "./Pages/farmerCommunity";
 import Chat from "./Components/FarmerCommunity/chat";
 import FarmerProfileForm from "./madhuni/components/farmerProfileForm";
 import Discounts from "./Pages/discounts";
+import FarmerHome from "./Components/Blockchain_Contracts/Farmer/farmer_home";
 const App = () => {
   return (
     <Router>
@@ -58,6 +59,7 @@ const App = () => {
           <Route path="/buyer" element={<BuyerUI />} />
           <Route path="/offer/:id" element={<OfferDetails />} />
           <Route path="/my_purchases" element={<MyPurchases />} />
+          <Route path="/farmer_home" element={<FarmerHome />} />
 
           {/* Weather and Chatbot routes */}
           <Route path="/weatherforecast" element={<Weather />} />
