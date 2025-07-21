@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from maduni2.hybrid_chatbot import HybridChatbot, ChatRequest, ChatResponse
+from maduni2.multi_route_chain_chatbot import HybridChatbot, ChatRequest, ChatResponse
 
 router = APIRouter()
 
