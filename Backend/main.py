@@ -13,6 +13,8 @@ from maduni.routes import weather
 from maduni.routes import location
 from maduni.routes import weather16
 
+from maduni2.routes import new_chatbot
+
 
 from routers import contracts
 from routers import login
@@ -53,6 +55,9 @@ app.include_router(chatbot.router, prefix='/chatbot', tags=['Chatbot'])
 app.include_router(weather.router, prefix='/weather', tags=['Weather'])
 app.include_router(location.router, prefix='/location', tags=['Weather'])
 app.include_router(weather16.router, prefix='/weatherfor16days', tags=['Weather'])
+
+app.include_router(new_chatbot.router, prefix='/newchatbot', tags=['New_Chatbot'])
+
 
 app.include_router(contracts.router, prefix="/blockchain", tags=["contracts"])
 app.include_router(login.router, prefix="/auth", tags=["login"])
