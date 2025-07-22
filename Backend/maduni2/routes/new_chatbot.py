@@ -10,7 +10,7 @@ chatbot = HybridChatbot()
 async def chat_endpoint(request: ChatRequest):
     """Endpoint for frontend to call"""
     try:
-        return await chatbot.get_response(request.question)
+        return await chatbot.get_response(request.question, request.language)
     except Exception as e:
         print(f"🔥 Error in chat endpoint: {e}")
         raise HTTPException(status_code=500, detail="Internal Server Error. Check server logs.")

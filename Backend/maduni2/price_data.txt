@@ -1,0 +1,3 @@
+fertilizer: Urea fertilizer costs around 6500 LKR per 50kg bag.
+pesticide: Pesticides vary by type. The average is 2000 LKR per liter.
+rice_seed: Rice seeds cost about 120 LKR per kg depending on variety.

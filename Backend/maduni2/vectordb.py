@@ -8,11 +8,15 @@ print("Start creating vector store!")
 embedding = SentenceTransformerEmbeddings(model_name="all-MiniLM-L6-v2")
 
 # Your price data
-price_data = [
-    {"name": "fertilizer", "content": "Urea fertilizer costs around 6500 LKR per 50kg bag."},
-    {"name": "pesticide", "content": "Pesticides vary by type. The average is 2000 LKR per liter."},
-    {"name": "rice_seed", "content": "Rice seeds cost about 120 LKR per kg depending on variety."}
-]
+price_data = []
+with open("price_data.txt", "r", encoding="utf-8") as f:
+    for line in f:
+        if ':' in line:
+            name, content = line.strip().split(":", 1)
+            price_data.append({
+                "name": name.strip(),
+                "content": content.strip()
+            })
 
 # Convert to Documents
 docs = [

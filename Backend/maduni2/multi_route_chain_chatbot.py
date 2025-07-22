@@ -9,7 +9,7 @@ from pydantic import BaseModel
 
 class ChatRequest(BaseModel):
     question: str
-    #user_id: Optional[str] = None  # Optional user identifier
+    language: str
 
 # Response model
 class ChatResponse(BaseModel):
@@ -94,11 +94,28 @@ Answer only with one word: "price" or "general or legal".
                 "type": input["type"]})
         )
         print("⚙️ Final chain assembled.")
-
-    async def get_response(self, question: str) -> ChatResponse:
+        
+    async def get_response(self, question: str, language: str) -> ChatResponse:
         print(f"🟡 Received question: {question}")
         try:
-            result = await self.final_chain.ainvoke(question)
+            # Detect language (simple check for now, you can improve later)
+            
+            # 🔁 Translate Sinhala → English if needed
+            if language == "sinhala":
+                print("🌐 Detected Sinhala – Translating to English...")
+                translated_question = self.gemini.translate_si_to_en(question)
+                if not translated_question:
+                    return ChatResponse(
+                        response="⚠️ Failed to translate your question to English. Please try again.",
+                        source="translation",
+                        success=False
+                    )
+                print(f"🔁 Translated question: {translated_question}")
+            else:
+                translated_question = question
+
+            # 🔍 Run through chain
+            result = await self.final_chain.ainvoke(translated_question)
             answer = result["answer"]
             query_type = result["type"]
 
@@ -107,11 +124,31 @@ Answer only with one word: "price" or "general or legal".
                 "tavily" if query_type == "legal" else
                 "gemini"
             )
+
+            # 🔁 Translate English answer back to Sinhala if needed
+            if language == "sinhala":
+                print("🔁 Translating answer back to Sinhala...")
+                translated_answer = self.gemini.translate_en_to_si(answer)
+                if not translated_answer:
+                    return ChatResponse(
+                        response="⚠️ Got the answer but failed to translate it to Sinhala. Please try again.",
+                        source=sources,
+                        success=False
+                    )
+                print(f"✅ Final translated answer: {translated_answer}")
+                return ChatResponse(
+                    response=translated_answer,
+                    source=sources,
+                    success=True
+                )
+
+            # 🟢 Return English response
             return ChatResponse(
                 response=answer,
                 source=sources,
                 success=True
             )
+
         except Exception as e:
             import traceback
             traceback.print_exc()
@@ -121,6 +158,7 @@ Answer only with one word: "price" or "general or legal".
                 source="error",
                 success=False
             )
+
     
         
     
